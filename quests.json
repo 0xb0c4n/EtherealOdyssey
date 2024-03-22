@@ -1,0 +1,13 @@
+{
+  {
+    "title": "Bienvenue sur Ethereum",
+    "questNumber": 1.0,
+    "reward": "spell_DASH",
+    "deploy": {
+      {
+        "instruction": "Aller voir le grand sorcier",
+        "questNumber": 1.1
+      }
+    }
+  }
+}
