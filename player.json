@@ -1,5 +1,7 @@
 {
   "username": "alex",
   "level": 0,
-  "questNumber": 1.0
+  "questNumber": 1.0,
+  "speed": 1,
+  "height": 1
 }
