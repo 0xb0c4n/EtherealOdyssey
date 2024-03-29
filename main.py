@@ -1,4 +1,5 @@
 import pyxel
+from deplacement import *
 
 pyxel.init(160, 120)
 
@@ -7,7 +8,6 @@ def update():
         pyxel.quit()
 
 def draw():
-  """Dessine la fenêtre
-  """
+  pyxel.rect(50, 0, 8, 8, 9)
   
 pyxel.run(update, draw)
