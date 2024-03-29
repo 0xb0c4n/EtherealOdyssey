@@ -1,0 +1,4 @@
+[
+  {"spell1": "DASH","damage":5, "unlocked":true},
+  {"spell2": "FIREBALL","damage":7, "unlocked":false}
+]
