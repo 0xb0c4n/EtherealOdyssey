@@ -19,4 +19,4 @@ def deplacement_x(perso_x, speed):
 def jump(perso_y, height):
   """Prend en compte le y du personnage (integer) et height(float)
   Renvoie le nouveau y"""
-  return perso_y
+  return y
