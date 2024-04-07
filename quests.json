@@ -1,25 +1,30 @@
 [{
   "title": "Bienvenue sur Ethereum",
+  "questNumber": 0,
+  "reward": "spell_DASH",
+  "deploy": [
+    {
+      "instruction": "Aller voir le grand sorcier",
+      "questNumber": 0.1,
+      "showed": true,
+      "finished": false,
+      "dialog": {
+        "character": "wizard, perso",
+        "wizard_t1": "Hi young adventurer ! Welcome to Ethereum. I presume your awakening got easier than I expected.",
+        "perso_t1": "Where am I ? Who am I ?"
+      }
+    }
+  ]
+},
+{
+  "title": "Bienvenue sur BItcoin",
   "questNumber": 1,
   "reward": "spell_DASH",
   "deploy": [
     {
       "instruction": "Aller voir le grand sorcier",
       "questNumber": 1.1,
-      "showed": true,
-      "finished": false
-    }
-  ]
-},
-{
-  "title": "Bienvenue sur Ethereum",
-  "questNumber": 2,
-  "reward": "spell_DASH",
-  "deploy": [
-    {
-      "instruction": "Aller voir le grand sorcier",
-      "questNumber": 2.1,
-      "showed": true,
+      "showed": false,
       "finished": false
     }
   ]
