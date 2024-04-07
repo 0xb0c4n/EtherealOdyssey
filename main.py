@@ -29,26 +29,30 @@ is_descending = False
 is_inside = False
 launch = False
 title = ""
+dialog = {}
+character = ""
+pressed = False
 
 def update():
-  global perso_x, animation, direction, y, scroll_x, is_jumping, is_descending, is_inside, title, launch
+  global perso_x, animation, direction, y, scroll_x, is_jumping, is_descending, is_inside, title, launch, character, dialog, pressed
   if perso_x > scroll_x + SCROLL_BORDER_X and direction == 1:
     scroll_x = perso_x - SCROLL_BORDER_X
   elif perso_x > scroll_x + SCROLL_BORDER_X and direction == -1:
     scroll_x = perso_x
 
-
   perso_x, animation, direction = deplacement_x(perso_x, 1)
   is_inside = start_quest(perso_x, pos_x_wizard)
   questNumber = get_player()['questNumber']
-  if(is_inside == True):
-    launch, title = launch_quest(questNumber, get_quests(), launch, title)
+
+  if(is_inside == True and pressed == False):
+    launch, title, dialog, character, pressed = launch_quest(questNumber, get_quests(), launch, title, dialog, character, pressed)
 
   if pyxel.btnr(pyxel.KEY_Z):
     animation = "fireball"
 
-  if (pyxel.btnr(pyxel.KEY_SPACE)):
-    is_jumping = True
+  if(launch != True):
+    if (pyxel.btnr(pyxel.KEY_SPACE)):
+      is_jumping = True
 
   if (y > 125 and is_jumping == True):
     y -= 2
@@ -74,9 +78,13 @@ def draw():
 
   if (is_inside == True):
     pyxel.text(375, 130, "Press [E] to interact", 12)
-    if(launch):
-      pyxel.text(500, 0, title, 12)
+  
+  if(launch):
+    pyxel.text(500, 50, title, 12)
 
+  if character != "" and dialog != {}:  
+    pyxel.text(200,300,character, 12)
+    pyxel.text(200,350,dialog[character],12)
   #Animation
   if (animation == "run" and is_jumping == False):
     coef = pyxel.frame_count // 5 % 5

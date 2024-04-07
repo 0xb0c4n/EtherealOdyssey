@@ -9,9 +9,8 @@
       "showed": true,
       "finished": false,
       "dialog": {
-        "character": "wizard, perso",
-        "wizard_t1": "Hi young adventurer ! Welcome to Ethereum. I presume your awakening got easier than I expected.",
-        "perso_t1": "Where am I ? Who am I ?"
+        "Wizard_t1": "Hi young adventurer ! Welcome to Ethereum. I presume your awakening got easier than I expected.",
+        "Perso_t1": "Where am I ? Who am I ?"
       }
     }
   ]
