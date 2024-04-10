@@ -8,7 +8,7 @@ run_sprite = [(48, 0, 38, 58), (88, 0, 29, 56), (120, 0, 32, 56),
 jump_sprite = [(0, 120, 28, 53), (32, 120, 36, 56), (72, 120, 31, 50),
                (104, 120, 32, 60), (136, 120, 38, 53), (176, 120, 25, 46)]
 fireball_sprite = [(0, 184, 32, 56), (32, 184, 39, 56), (72, 184, 48, 53),
-                   (120, 184, 50, 53), (168, 184, 7, 8)]
+                   (120, 184, 50, 53)]
 pal = [0xffffff,0x8c938c,0x5a3936,0x28222c,0x4c505b,0x73522d,
        0x83604f,0x3c4c54,0xc49892,0x3c445c,0x6c6e6c,0x7c706a,
        0x6c6468,0xf3b340,0xe68d02,0xffb228,0xAF082D,0x83213C,
@@ -32,9 +32,10 @@ title = ""
 dialog = {}
 character = ""
 pressed = False
+i = 0
 
 def update():
-  global perso_x, animation, direction, y, scroll_x, is_jumping, is_descending, is_inside, title, launch, character, dialog, pressed
+  global perso_x, animation, direction, y, scroll_x, is_jumping, is_descending, is_inside, title, launch, character, dialog, pressed, i
   if perso_x > scroll_x + SCROLL_BORDER_X and direction == 1:
     scroll_x = perso_x - SCROLL_BORDER_X
   elif perso_x > scroll_x + SCROLL_BORDER_X and direction == -1:
@@ -44,8 +45,11 @@ def update():
   is_inside = start_quest(perso_x, pos_x_wizard)
   questNumber = get_player()['questNumber']
 
-  if(is_inside == True and pressed == False):
-    launch, title, dialog, character, pressed = launch_quest(questNumber, get_quests(), launch, title, dialog, character, pressed)
+  
+  if(is_inside == True):
+    launch, title, dialog, character = launch_quest(questNumber, get_quests(), launch, title, dialog, character, i)
+    if(pyxel.btnr(pyxel.KEY_J)):
+      i+=1
 
   if pyxel.btnr(pyxel.KEY_Z):
     animation = "fireball"
@@ -69,10 +73,9 @@ def update():
 def draw():
   pyxel.cls(0)
   pyxel.camera(scroll_x, 0)
-  pyxel.images[1].load(0, 0, "assets/wizard.png")
-  pyxel.images[2].load(0, 0, "assets/heart.png")
-  pyxel.blt(pos_x_wizard, pos_y_wizard, 1, 0, 0, 153, 191, 12)
-  pyxel.blt(scroll_x, 0, 2, 0, 0, 153, 23, 23)
+  pyxel.images[1].load(0, 0, "assets/assets1.png")
+  pyxel.blt(pos_x_wizard, pos_y_wizard, 1, 0, 0, 36, 191, 12)
+  pyxel.blt(scroll_x, 0, 1, 36, 0, 60, 23, 23)
 
   #Démarrage de la quête
 
@@ -90,11 +93,10 @@ def draw():
     coef = pyxel.frame_count // 5 % 5
     pyxel.blt(perso_x, y, 0, run_sprite[coef][0], run_sprite[coef][1],
               run_sprite[coef][2] * direction, run_sprite[coef][3], 0)
-  elif (animation == "fireball"):
-    coef = pyxel.frame_count // 5 % 5
-    pyxel.blt(perso_x, y, 0, fireball_sprite[coef][0],
-              fireball_sprite[coef][1], fireball_sprite[coef][2],
-              fireball_sprite[coef][3], fireball_sprite[coef][4], 0)
+  elif (animation == "fireball" and is_jumping == False):
+    coef = pyxel.frame_count // 4 % 4
+    pyxel.blt(perso_x, y, 0, fireball_sprite[coef][0], fireball_sprite[coef][1],
+              fireball_sprite[coef][2], fireball_sprite[coef][3], 0)
   elif (y != 150 and is_jumping == True):
     coef = pyxel.frame_count // 6 % 6
     print(coef)

@@ -1,22 +1,25 @@
 [{
-  "title": "Bienvenue sur Ethereum",
+  "title": "Welcome to Ethereum",
   "questNumber": 0,
   "reward": "spell_DASH",
   "deploy": [
     {
-      "instruction": "Aller voir le grand sorcier",
+      "instruction": "Go see the great wizard",
       "questNumber": 0.1,
       "showed": true,
       "finished": false,
       "dialog": {
-        "Wizard_t1": "Hi young adventurer ! Welcome to Ethereum. I presume your awakening got easier than I expected.",
-        "Perso_t1": "Where am I ? Who am I ?"
+        "Great Wizard_t1": "Hello young adventurer ! I presume your awakening got easier than I expected.",
+        "Me_t1": "Where am I ? Who am I ?",
+        "Great Wizard_t2": "Welcome to Ethereum ! Your journey starts here...",
+        "Me_T2": "Wait... What's Ethereum ?",
+        "Great Wizard_T3": ""
       }
     }
   ]
 },
 {
-  "title": "Bienvenue sur BItcoin",
+  "title": "Le portefeuille perdu",
   "questNumber": 1,
   "reward": "spell_DASH",
   "deploy": [
