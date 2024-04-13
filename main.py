@@ -12,7 +12,8 @@ fireball_sprite = [(0, 184, 32, 56), (32, 184, 39, 56), (72, 184, 48, 53),
 pal = [0xffffff,0x8c938c,0x5a3936,0x28222c,0x4c505b,0x73522d,
        0x83604f,0x3c4c54,0xc49892,0x3c445c,0x6c6e6c,0x7c706a,
        0x6c6468,0xf3b340,0xe68d02,0xffb228,0xAF082D,0x83213C,
-       0xF35C5C,0x2D2E4D,0x3A072B]
+       0xF35C5C,0x2D2E4D,0x3A072B,0x273852,0xA0DAE8,
+       0x316595,0xE2A199,0x2374A2,0x71BADD,0x000000]
 
 pyxel.init(254, 157, "Ethereal Odyssey")
 pyxel.load("ressources.pyxres")
@@ -97,21 +98,20 @@ def draw():
     pyxel.camera(scroll_x, 0)
     pyxel.images[2].load(0, 0, "assets/assets1.png")
     pyxel.images[1].load(0, 0, "assets/background.png")
-    pyxel.blt(scroll_x, 0, 2, 36, 0, 60, 23, 23)
     for i in range(50):
       pyxel.blt(256*i, 0, 1, 0,0,256,177)
 
     for elt in pnj_list:
-      pyxel.blt(elt["position_x"], elt["position_y"], elt["image_bank"], elt["location_x"], elt["location_y"], elt["size_x"], elt["size_y"])
+      pyxel.blt(elt["position_x"], elt["position_y"], elt["image_bank"], elt["location_x"], elt["location_y"], elt["size_x"], elt["size_y"], 0)
 
     #Démarrage de la quête
 
     if (is_inside == True):
-      pyxel.text(375, 75, "Press [E] to interact", 12)
+      pyxel.text(375, 75, "Press [E] to interact", 0)
     
     if(launch):
-      pyxel.text(scroll_x + 160, 5, title, 12)
-      pyxel.text(scroll_x + 150, 15, instruction, 12)
+      pyxel.text(scroll_x + 160, 5, title, 0)
+      pyxel.text(scroll_x + 150, 15, instruction, 0)
 
     if character != "" and dialog != {} and dialog != "":  
       pyxel.rect(scroll_x, 85, 256, 82, 12)
