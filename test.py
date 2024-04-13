@@ -1,20 +1,29 @@
 import pyxel
 
-class Game:
+class ParallaxBackground:
     def __init__(self):
-        pyxel.init(1920, 1080)
-        pyxel.image(0).load(0, 0, "assets/background.png")  # Charge l'image "sprites.png" dans la banque d'images 0
-        self.sprite_x = 0
-        self.sprite_y = 0
-        self.sprite_width = 400
-        self.sprite_height = 400
+        pyxel.init(160, 120, "Parallax Background")
+        pyxel.load("2.png")  # Load background images
+        pyxel.load("3.png")
+        pyxel.load("5.png")
+
+        self.scroll_speeds = [1, 2, 3]  # Speed of each layer
+        self.layer_positions = [0, 0, 0]  # Initial positions of each layer
+
         pyxel.run(self.update, self.draw)
 
     def update(self):
-        pass
+        for i in range(len(self.layer_positions)):
+            self.layer_positions[i] -= self.scroll_speeds[i]
+            # Reset position when the layer moves out of the screen
+            if self.layer_positions[i] <= -pyxel.width:
+                self.layer_positions[i] = 0
 
     def draw(self):
-        pyxel.cls(0)  # Efface l'écran avec la couleur noire (couleur index 0)
-        pyxel.blt(80, 60, 0, self.sprite_x, self.sprite_y, self.sprite_width, self.sprite_height, 0)  # Dessine une partie de l'image
+        pyxel.cls(0)  # Clear the screen
 
-Game()
+        # Draw each background layer
+        for i in range(len(self.layer_positions)):
+            pyxel.blt(self.layer_positions[i], 0, 0, 0, pyxel.width, pyxel.height)
+
+ParallaxBackground()

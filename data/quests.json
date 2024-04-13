@@ -9,13 +9,13 @@
       "showed": true,
       "finished": false,
       "dialog": {
-        "Unknown Elder_t1": "Hello young adventurer ! I presume your awakening got easier than I expected.",
+        "Unknown Elder_t1": "Hello young adventurer ! I presume your awakening \ngot easier than I expected.",
         "Me_t1": "Where am I ? Who am I ?",
         "Unknown Elder_t2": "Welcome to Ethereum ! Your journey starts here...",
         "Me_T2": "Wait... What's Ethereum ?",
-        "Unknown Elder_T3": "Ethereum is the one of the three worlds. A long time ago, it was a land of peace and prosperity.",
+        "Unknown Elder_T3": "Ethereum is the one of the three worlds. A long time \nago, it was a land of peace and prosperity.",
         "Me_T3": "And what happened ?",
-        "Unknown Elder_T4": "The Great Wizard Vitalik, creator of the dimension, once suddently disappeared. "
+        "Unknown Elder_T4": "The Great Wizard Vitalik, creator of the dimension, once \nsuddently disappeared. "
       }
     }
   ]
