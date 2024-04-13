@@ -1,7 +1,7 @@
 import pyxel
 from deplacement import deplacement_x
 from quests import start_quest, launch_quest
-from get_jsondata import get_quests, get_player, get_spells
+from get_jsondata import get_quests, get_player, get_spells, get_pnj
 
 run_sprite = [(48, 0, 38, 58), (88, 0, 29, 56), (120, 0, 32, 56),
               (152, 0, 33, 50), (192, 0, 43, 51), (0, 64, 31, 51)]
@@ -17,13 +17,12 @@ pal = [0xffffff,0x8c938c,0x5a3936,0x28222c,0x4c505b,0x73522d,
 pyxel.init(500, 400, "Ethereal Odyssey", display_scale=2)
 pyxel.load("ressources.pyxres")
 pyxel.colors.from_list(pal)
+
 perso_x = 0
 y = 150
 scroll_x = 0
 SCROLL_BORDER_X = 225
 animation = "fireball"
-pos_x_wizard = 400
-pos_y_wizard = 140
 is_jumping = False
 is_descending = False
 is_inside = False
@@ -31,32 +30,46 @@ launch = False
 title = ""
 dialog = {}
 character = ""
-pressed = False
 i = 0
+quest_list = get_quests()
+instruction = ""
 
 def update():
-  global perso_x, animation, direction, y, scroll_x, is_jumping, is_descending, is_inside, title, launch, character, dialog, pressed, i
-  if perso_x > scroll_x + SCROLL_BORDER_X and direction == 1:
-    scroll_x = perso_x - SCROLL_BORDER_X
-  elif perso_x > scroll_x + SCROLL_BORDER_X and direction == -1:
-    scroll_x = perso_x
+  global perso_x, animation, direction, y, scroll_x, is_jumping, is_descending, is_inside, title, launch, character, pnj_list, dialog, instruction, i
 
   perso_x, animation, direction = deplacement_x(perso_x, 1)
-  is_inside = start_quest(perso_x, pos_x_wizard)
   questNumber = get_player()['questNumber']
+  dimension = get_player()["dimension"]
+  pnj_list = get_pnj(dimension)
+
+  for elt in pnj_list:
+    if elt["questGiver"] == True:
+      print("yes")
+      is_inside = start_quest(perso_x, elt["position_x"])
+
+  if perso_x > scroll_x + SCROLL_BORDER_X and direction == 1:
+    scroll_x += 3
+  elif direction == -1:
+    scroll_x -= 3
 
   
   if(is_inside == True):
-    launch, title, dialog, character = launch_quest(questNumber, get_quests(), launch, title, dialog, character, i)
-    if(pyxel.btnr(pyxel.KEY_J)):
-      i+=1
+    if(i == len(get_quests()[0]["deploy"][0]["dialog"])):
+      dialog = ""
+      quest_list[int(questNumber)]["deploy"][int(questNumber % 1)]["showed"] = False
+      print(int(questNumber % 1))
+    else:
+      launch, title, dialog, character, instruction = launch_quest(questNumber, get_quests(), launch, title, dialog, character, instruction, i)
+    
+      if(pyxel.btnr(pyxel.KEY_J)):
+        i+=1
+
 
   if pyxel.btnr(pyxel.KEY_Z):
     animation = "fireball"
 
-  if(launch != True):
-    if (pyxel.btnr(pyxel.KEY_SPACE)):
-      is_jumping = True
+  if (pyxel.btnr(pyxel.KEY_SPACE)):
+    is_jumping = True
 
   if (y > 125 and is_jumping == True):
     y -= 2
@@ -74,8 +87,10 @@ def draw():
   pyxel.cls(0)
   pyxel.camera(scroll_x, 0)
   pyxel.images[1].load(0, 0, "assets/assets1.png")
-  pyxel.blt(pos_x_wizard, pos_y_wizard, 1, 0, 0, 36, 191, 12)
   pyxel.blt(scroll_x, 0, 1, 36, 0, 60, 23, 23)
+
+  for elt in pnj_list:
+    pyxel.blt(elt["position_x"], elt["position_y"], elt["image_bank"], elt["location_x"], elt["location_y"], elt["size_x"], elt["size_y"])
 
   #Démarrage de la quête
 
@@ -83,11 +98,12 @@ def draw():
     pyxel.text(375, 130, "Press [E] to interact", 12)
   
   if(launch):
-    pyxel.text(500, 50, title, 12)
+    pyxel.text(scroll_x + 400, 50, title, 12)
+    pyxel.text(scroll_x + 400, 75, instruction, 12)
 
-  if character != "" and dialog != {}:  
-    pyxel.text(200,300,character, 12)
-    pyxel.text(200,350,dialog[character],12)
+  if character != "" and dialog != {} and dialog != "":  
+    pyxel.text(scroll_x + 100,300,character.split("_")[0], 12)
+    pyxel.text(scroll_x + 100,350,dialog[character],12)
   #Animation
   if (animation == "run" and is_jumping == False):
     coef = pyxel.frame_count // 5 % 5

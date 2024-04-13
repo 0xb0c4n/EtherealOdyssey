@@ -1,0 +1,13 @@
+[
+  {
+    "name": "Unknown Elder",
+    "questGiver": true,
+    "image_bank": 1,
+    "location_x": 0,
+    "location_y": 0,
+    "size_x": 36,
+    "size_y": 191,
+    "position_x": 400,
+    "position_y": 150
+  }
+]

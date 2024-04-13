@@ -4,16 +4,18 @@
   "reward": "spell_DASH",
   "deploy": [
     {
-      "instruction": "Go see the great wizard",
+      "instruction": "Go see the Unknown Elder",
       "questNumber": 0.1,
       "showed": true,
       "finished": false,
       "dialog": {
-        "Great Wizard_t1": "Hello young adventurer ! I presume your awakening got easier than I expected.",
+        "Unknown Elder_t1": "Hello young adventurer ! I presume your awakening got easier than I expected.",
         "Me_t1": "Where am I ? Who am I ?",
-        "Great Wizard_t2": "Welcome to Ethereum ! Your journey starts here...",
+        "Unknown Elder_t2": "Welcome to Ethereum ! Your journey starts here...",
         "Me_T2": "Wait... What's Ethereum ?",
-        "Great Wizard_T3": ""
+        "Unknown Elder_T3": "Ethereum is the one of the three worlds. A long time ago, it was a land of peace and prosperity.",
+        "Me_T3": "And what happened ?",
+        "Unknown Elder_T4": "The Great Wizard Vitalik, creator of the dimension, once suddently disappeared. "
       }
     }
   ]

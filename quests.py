@@ -24,7 +24,7 @@ def start_quest(perso_x, pos_x_wizard):
   wizard_hitbox = calc_hitbox(pos_x_wizard)
   return is_in_hitbox(perso_x, wizard_hitbox)
 
-def launch_quest(questNumber, questDict, launch, title, dialog, character, i):
+def launch_quest(questNumber, questDict, launch, title, dialog, character, instruction, i):
   """Vérifie si la quête précédente est terminée, et si oui démarre la nouvelle quête
   Prend en compte le questNumber du joueur, et l'état de la quête précédente"""
   if(pyxel.btnr(pyxel.KEY_E)):
@@ -32,8 +32,9 @@ def launch_quest(questNumber, questDict, launch, title, dialog, character, i):
     
   if(launch == True):
     title = questDict[int(questNumber)]["title"]
-    dialog = questDict[int(questNumber)]["deploy"][0]["dialog"]
+    dialog = questDict[int(questNumber)]["deploy"][int(questNumber % 1) - 1]["dialog"]
     character_list = list(dialog.keys())
     character = character_list[i]
+    instruction = questDict[int(questNumber)]["deploy"][int(questNumber % 1) - 1]["instruction"]
       
-  return launch, title, dialog, character
+  return launch, title, dialog, character, instruction
