@@ -9,18 +9,17 @@ jump_sprite = [(0, 120, 28, 53), (32, 120, 36, 56), (72, 120, 31, 50),
                (104, 120, 32, 60), (136, 120, 38, 53), (176, 120, 25, 46)]
 fireball_sprite = [(0, 184, 32, 56), (32, 184, 39, 56), (72, 184, 48, 53),
                    (120, 184, 50, 53)]
-pal = [0xffffff,0x8c938c,0x5a3936,0x28222c,0x4c505b,0x73522d,
+pal = [0x1b2954,0x8c938c,0x5a3936,0x28222c,0x4c505b,0x73522d,
        0x83604f,0x3c4c54,0xc49892,0x3c445c,0x6c6e6c,0x7c706a,
        0x6c6468,0xf3b340,0xe68d02,0xffb228,0xAF082D,0x83213C,
-       0xF35C5C,0x2D2E4D,0x3A072B,0x273852,0xA0DAE8,
-       0x316595,0xE2A199,0x2374A2,0x71BADD,0x000000]
+       0xF35C5C,0x2D2E4D,0x316595,0xffffff]
 
-pyxel.init(254, 157, "Ethereal Odyssey")
+pyxel.init(500, 250, "Ethereal Odyssey", display_scale=2)
 pyxel.load("ressources.pyxres")
 pyxel.colors.from_list(pal)
 
 perso_x = 0
-y = 99
+y = 169
 scroll_x = 0
 SCROLL_BORDER_X = 125
 animation = "fireball"
@@ -57,7 +56,6 @@ def update():
     if(i == len(get_quests()[0]["deploy"][0]["dialog"])):
       dialog = ""
       quest_list[int(questNumber)]["deploy"][int(questNumber % 1)]["showed"] = False
-      print(int(questNumber % 1))
     else:
       launch, title, dialog, character, instruction = launch_quest(questNumber, get_quests(), launch, title, dialog, character, instruction, i)
     
@@ -75,13 +73,12 @@ def update():
   if (pyxel.btnr(pyxel.KEY_SPACE)):
     is_jumping = True
 
-  print(y)
 
-  if (y >= 79 and is_jumping == True):
+  if (y >= 149 and is_jumping == True):
     y -= 2
-  elif (is_descending == True and y <= 99):
+  elif (is_descending == True and y <= 169):
     y += 2
-  elif (y <= 79):
+  elif (y <= 149):
     is_descending = True
     is_jumping = False
   else:
@@ -102,21 +99,21 @@ def draw():
       pyxel.blt(256*i, 0, 1, 0,0,256,177)
 
     for elt in pnj_list:
-      pyxel.blt(elt["position_x"], elt["position_y"], elt["image_bank"], elt["location_x"], elt["location_y"], elt["size_x"], elt["size_y"], 0)
+      pyxel.blt(elt["position_x"], elt["position_y"], elt["image_bank"], elt["location_x"], elt["location_y"], elt["size_x"], elt["size_y"], 21)
 
     #Démarrage de la quête
 
     if (is_inside == True):
-      pyxel.text(375, 75, "Press [E] to interact", 0)
+      pyxel.text(375, 75, "Press [E] to interact", 27)
     
     if(launch):
-      pyxel.text(scroll_x + 160, 5, title, 0)
-      pyxel.text(scroll_x + 150, 15, instruction, 0)
+      pyxel.text(scroll_x + 160, 5, title, 27)
+      pyxel.text(scroll_x + 150, 15, instruction, 27)
 
     if character != "" and dialog != {} and dialog != "":  
       pyxel.rect(scroll_x, 85, 256, 82, 12)
-      pyxel.text(scroll_x + 20,99,character.split("_")[0], 0)
-      pyxel.text(scroll_x + 20,120,dialog[character],0)
+      pyxel.text(scroll_x + 20,99,character.split("_")[0], 27)
+      pyxel.text(scroll_x + 20,120,dialog[character],27)
     #Animation
     if (animation == "run" and is_jumping == False):
       coef = pyxel.frame_count // 5 % 5
@@ -128,7 +125,6 @@ def draw():
                 fireball_sprite[coef][2], fireball_sprite[coef][3], 0)
     elif (y != 150 and is_jumping == True):
       coef = pyxel.frame_count // 6 % 6
-      print(coef)
       pyxel.blt(perso_x, y, 0, jump_sprite[coef][0], jump_sprite[coef][1],
                 jump_sprite[coef][2] * direction, jump_sprite[coef][3], 0)
     else:
