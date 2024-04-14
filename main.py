@@ -102,18 +102,20 @@ def draw():
       pyxel.blt(elt["position_x"], elt["position_y"], elt["image_bank"], elt["location_x"], elt["location_y"], elt["size_x"], elt["size_y"], 21)
 
     #Démarrage de la quête
+    
+    for i in range(1400):
+      pyxel.blt(42*i,250-27,2,1,74,42,27)
 
     if (is_inside == True):
-      pyxel.text(375, 75, "Press [E] to interact", 27)
+      pyxel.text(375, 130, "Press [E] to interact", 27)
     
     if(launch):
       pyxel.text(scroll_x + 160, 5, title, 27)
       pyxel.text(scroll_x + 150, 15, instruction, 27)
 
     if character != "" and dialog != {} and dialog != "":  
-      pyxel.rect(scroll_x, 85, 256, 82, 12)
-      pyxel.text(scroll_x + 20,99,character.split("_")[0], 27)
-      pyxel.text(scroll_x + 20,120,dialog[character],27)
+      pyxel.text(scroll_x + 20,135,character.split("_")[0], 27)
+      pyxel.text(scroll_x + 20,150,dialog[character],27)
     #Animation
     if (animation == "run" and is_jumping == False):
       coef = pyxel.frame_count // 5 % 5
