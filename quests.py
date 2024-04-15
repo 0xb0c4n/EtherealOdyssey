@@ -24,19 +24,19 @@ def interact(perso_x, pos_x):
   hitbox = calc_hitbox(pos_x)
   return is_in_hitbox(perso_x, hitbox)
 
-def launch_quest(questNumber, questDict, launch, dialog, character, i):
-  """Vérifie si la quête précédente est terminée, et si oui démarre la nouvelle quête
-  Prend en compte le questNumber du joueur, et l'état de la quête précédente"""
+def launch_quest(questNumber, questDict, launch, dialog, character, i, index):
   if(pyxel.btnr(pyxel.KEY_E)):
     launch = True
     
   if(launch == True):
-    secondQuestNumber = int(str(questNumber % 1).split(".")[1]) - 1
-    dialog = questDict[int(questNumber)]["deploy"][secondQuestNumber]["dialog"]
-    if dialog != {}:
-      character_list = list(dialog.keys())
-      character = character_list[i]
+    if(index == None):
+      secondQuestNumber = int(str(questNumber % 1).split(".")[1]) - 1
+      dialog = questDict[int(questNumber)]["deploy"][secondQuestNumber]["dialog"]
+      if dialog != {}:
+        character_list = list(dialog.keys())
+        character = character_list[i]
+    else:
+      secondQuestNumber = int(str(questNumber % 1).split(".")[1]) - 1
 
-      
   return launch, dialog, character
 

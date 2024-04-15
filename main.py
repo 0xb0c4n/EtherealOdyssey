@@ -11,6 +11,7 @@ jump_sprite = [(0, 120, 28, 53), (32, 120, 36, 56), (72, 120, 31, 50),
                (104, 120, 32, 60), (136, 120, 38, 53), (176, 120, 25, 46)]
 fireball_sprite = [(0, 184, 32, 56), (32, 184, 39, 56), (72, 184, 48, 53),
                    (120, 184, 50, 53)]
+
 pal = [0x1b2954,0x8c938c,0x5a3936,0x28222c,0x4c505b,0x73522d,
        0x83604f,0x3c4c54,0xc49892,0x3c445c,0x6c6e6c,0x7c706a,
        0x6c6468,0xf3b340,0xe68d02,0xffb228,0xAF082D,0x83213C,
@@ -37,14 +38,14 @@ character = ""
 i = 0
 game_launched = False
 direction = 1
+index = None
 
 def update():
-  global perso_x, animation, direction, y, scroll_x, is_jumping, is_descending, is_inside, character_name, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i, characters_quest, objective
+  global perso_x, animation, direction, y, scroll_x, is_jumping, is_descending, is_inside, character_name, index, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i, characters_quest, objective
 
   perso_x, animation, direction = deplacement_x(perso_x, 1, direction)
 
   quest_list = get_quests()
-  questNumber = get_player()['questNumber']
   dimension = get_player()["dimension"]
   pnj_list = get_pnj(dimension)
 
@@ -70,10 +71,35 @@ def update():
       is_inside[character_name] = interact(perso_x, position_x)
 
   if(is_inside[characters_quest] == True and objective == "dialog"):
-    launch, dialog, character = launch_quest(questNumber, quest_list, launch, dialog, character, i)
-      
-    if(pyxel.btnr(pyxel.KEY_J)):
-      i+=1
+    if(i == len(quest_list[int(questNumber)]["deploy"][secondQuestNumber]["dialog"]) and index != 0 and index != 2):
+      if(quest_list[int(questNumber)]["deploy"][secondQuestNumber] == quest_list[int(questNumber)]["deploy"][-1]):
+        questNumber = int(questNumber) + 1.1
+        launch = False
+        changeJson("questNumber", questNumber, "data/player.json")
+        dialog = ""
+        if(quest_list[int(questNumber)]["reward"]):
+          reward = quest_list[int(questNumber)]["reward"]
+      else:
+        dialog = ""
+        i = 0
+        questNumber = round(questNumber + 0.1, 1)
+        launch = False
+        changeJson("questNumber", questNumber, "data/player.json")
+    else:
+      launch, dialog, character = launch_quest(questNumber, quest_list, launch, dialog, character, i, index)
+      if launch:
+        if type(dialog[character]) != str:
+          if pyxel.btnr(pyxel.KEY_1):
+              index = 0
+          elif pyxel.btnr(pyxel.KEY_2):
+              index = 1
+          elif pyxel.btnr(pyxel.KEY_3):
+              index = 2
+        else:
+          if(pyxel.btnr(pyxel.KEY_J)):
+            i+=1
+
+
 
   if pyxel.btnr(pyxel.KEY_Z):
     animation = "fireball"
@@ -82,7 +108,7 @@ def update():
     if(pyxel.btnr(pyxel.KEY_E)):
       game_launched = True
 
-  if (pyxel.btnr(pyxel.KEY_SPACE)):
+  if (pyxel.btnr(pyxel.KEY_SPACE) and is_jumping == False and is_descending == False):
     is_jumping = True
 
 
@@ -113,7 +139,7 @@ def draw():
     for elt in pnj_list:
       pyxel.blt(elt["position_x"], elt["position_y"], elt["image_bank"], elt["location_x"], elt["location_y"], elt["size_x"], elt["size_y"], 21)
 
-      if (is_inside[elt["name"]] == True):
+      if (is_inside[elt["name"]] == True and elt["name"] == characters_quest):
         pyxel.text(elt["position_x"]-20, 140, "Press [E] to interact", 21)
     #Démarrage de la quête
     
@@ -138,11 +164,17 @@ def draw():
     else:
       pyxel.blt(perso_x, y, 0, 0, 0, 24*direction, 58, 0)
 
-    if character != "" and dialog != {} and dialog != "" and showed == False:  
-      pyxel.rect(scroll_x,170,500,100,23)
-      pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
-      pyxel.text(scroll_x + 20,215,dialog[character],21)
-      pyxel.text(scroll_x + 400, 230, "Press [J] to continue", 21)
+    if character != "" and dialog != {} and dialog != "" and is_inside[characters_quest]: 
+      if(type(dialog[character]) == list):
+        pyxel.rect(scroll_x,170,500,100,23)
+        pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
+        for i in range(len(dialog[character])):
+          pyxel.text(scroll_x + 20,200+i*10,dialog[character][i]["Me_t1"], 21)
+      else:
+        pyxel.rect(scroll_x,170,500,100,23)
+        pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
+        pyxel.text(scroll_x + 20,215,dialog[character],21)
+        pyxel.text(scroll_x + 400, 230, "Press [J] to continue", 21)
    
     pyxel.rect(scroll_x + 390, 0, 110, 25, 23)
     pyxel.text(scroll_x + 400, 5, title, 21)
