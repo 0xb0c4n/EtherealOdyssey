@@ -56,6 +56,11 @@ def update():
   title = quest_list[int(questNumber)]["title"]
   objective = deploy[secondQuestNumber]["objective"]
   characters_quest = deploy[secondQuestNumber]["character"]
+  if "correct_index" in deploy[secondQuestNumber]:
+    correct_index = deploy[secondQuestNumber]["correct_index"]
+  else:
+    correct_index = ""
+  original_dialog = deploy[secondQuestNumber]["dialog"]
 
   if perso_x > scroll_x + SCROLL_BORDER_X and direction == 1:
     scroll_x += 3
@@ -71,7 +76,7 @@ def update():
       is_inside[character_name] = interact(perso_x, position_x)
 
   if(is_inside[characters_quest] == True and objective == "dialog"):
-    if(i == len(quest_list[int(questNumber)]["deploy"][secondQuestNumber]["dialog"]) and index != 0 and index != 2):
+    if(i == len(original_dialog) - 1 and (correct_index == index or correct_index == "")):
       if(quest_list[int(questNumber)]["deploy"][secondQuestNumber] == quest_list[int(questNumber)]["deploy"][-1]):
         questNumber = int(questNumber) + 1.1
         launch = False
@@ -85,6 +90,11 @@ def update():
         questNumber = round(questNumber + 0.1, 1)
         launch = False
         changeJson("questNumber", questNumber, "data/player.json")
+    elif correct_index != index and index != None:
+        launch = False
+        dialog = ""
+        i = 0
+        index = None
     else:
       launch, dialog, character = launch_quest(questNumber, quest_list, launch, dialog, character, i, index)
       if launch:
