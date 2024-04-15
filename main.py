@@ -1,6 +1,6 @@
 import pyxel
 from deplacement import deplacement_x
-from quests import start_quest, launch_quest
+from quests import interact, launch_quest
 from get_jsondata import get_quests, get_player, get_spells, get_pnj
 from write import changeJson
 from random import randint
@@ -30,26 +30,31 @@ SCROLL_BORDER_X = 125
 animation = "fireball"
 is_jumping = False
 is_descending = False
-is_inside = False
+is_inside = {}
 launch = False
 dialog = {}
 character = ""
 i = 0
-quest_list = get_quests()
-questNumber = get_player()['questNumber']
-secondQuestNumber = int(str(questNumber % 1).split(".")[1]) - 1
-title = get_quests()[int(questNumber)]["title"]
-instruction = get_quests()[int(questNumber)]["deploy"][secondQuestNumber]["instruction"]
 game_launched = False
 direction = 1
 
 def update():
-  global perso_x, animation, direction, y, scroll_x, is_jumping, is_descending, is_inside, character_name, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i
+  global perso_x, animation, direction, y, scroll_x, is_jumping, is_descending, is_inside, character_name, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i, characters_quest, objective
 
   perso_x, animation, direction = deplacement_x(perso_x, 1, direction)
+
+  quest_list = get_quests()
   questNumber = get_player()['questNumber']
   dimension = get_player()["dimension"]
   pnj_list = get_pnj(dimension)
+
+  questNumber = get_player()['questNumber']
+  secondQuestNumber = int(str(questNumber % 1).split(".")[1]) - 1
+  deploy = quest_list[int(questNumber)]["deploy"]
+  instruction = deploy[secondQuestNumber]["instruction"]
+  title = quest_list[int(questNumber)]["title"]
+  objective = deploy[secondQuestNumber]["objective"]
+  characters_quest = deploy[secondQuestNumber]["character"]
 
   if perso_x > scroll_x + SCROLL_BORDER_X and direction == 1:
     scroll_x += 3
@@ -59,13 +64,13 @@ def update():
     scroll_x -= 3
 
   for elt in pnj_list:
-    if elt["questGiver"] == True:
-      is_inside = start_quest(perso_x, elt["position_x"])
+    if elt["interactable"] == True:
       character_name = elt["name"]
       position_x = elt["position_x"]
-  
-  if(is_inside == True):
-    launch, dialog, character = launch_quest(questNumber, get_quests(), launch, dialog, character, i)
+      is_inside[character_name] = interact(perso_x, position_x)
+
+  if(is_inside[characters_quest] == True and objective == "dialog"):
+    launch, dialog, character = launch_quest(questNumber, quest_list, launch, dialog, character, i)
       
     if(pyxel.btnr(pyxel.KEY_J)):
       i+=1
@@ -108,15 +113,14 @@ def draw():
     for elt in pnj_list:
       pyxel.blt(elt["position_x"], elt["position_y"], elt["image_bank"], elt["location_x"], elt["location_y"], elt["size_x"], elt["size_y"], 21)
 
+      if (is_inside[elt["name"]] == True):
+        pyxel.text(elt["position_x"]-20, 140, "Press [E] to interact", 21)
     #Démarrage de la quête
     
     for i in range(1400):
       pyxel.blt(41*i,250-21,2,1,74,41,21)
 
     pyxel.blt(200, 0, 2, 47,0,128,100,21)
-
-    if (is_inside == True):
-      pyxel.text(position_x-15, 130, "Press [E] to interact", 21)
 
  #Animation
     if (animation == "run" and is_jumping == False):

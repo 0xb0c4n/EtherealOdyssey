@@ -20,9 +20,9 @@ def is_in_hitbox(pos_x, hitbox):
     return False
 
 
-def start_quest(perso_x, pos_x_wizard):
-  wizard_hitbox = calc_hitbox(pos_x_wizard)
-  return is_in_hitbox(perso_x, wizard_hitbox)
+def interact(perso_x, pos_x):
+  hitbox = calc_hitbox(pos_x)
+  return is_in_hitbox(perso_x, hitbox)
 
 def launch_quest(questNumber, questDict, launch, dialog, character, i):
   """Vérifie si la quête précédente est terminée, et si oui démarre la nouvelle quête
