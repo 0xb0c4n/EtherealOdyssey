@@ -43,12 +43,10 @@ instruction = get_quests()[int(questNumber)]["deploy"][secondQuestNumber]["instr
 game_launched = False
 direction = 1
 
-
-
 def update():
   global perso_x, animation, direction, y, scroll_x, is_jumping, is_descending, is_inside, character_name, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i
 
-  perso_x, animation, direction = deplacement_x(perso_x, 1)
+  perso_x, animation, direction = deplacement_x(perso_x, 1, direction)
   questNumber = get_player()['questNumber']
   dimension = get_player()["dimension"]
   pnj_list = get_pnj(dimension)

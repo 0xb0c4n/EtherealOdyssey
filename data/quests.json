@@ -4,10 +4,12 @@
   "reward": "spell_DASH",
   "deploy": [
     {
+      "character": "Unknown Elder",
       "instruction": "Go see the Unknown Elder",
       "questNumber": 0.1,
       "showed": false,
       "finished": false,
+      "objective": "dialog",
       "dialog": {
         "Unknown Elder_t1": "Greetings, traveler. I see you're new to these lands.",
         "Me_t1": "Where am I ? Who am I ?",
@@ -27,10 +29,12 @@
       }
     },
     {
+      "character": "Degenerated Trader",
       "instruction": "Go find the Emerald Gem",
       "questNumber": 0.2,
       "showed": false,
       "finished": false,
+      "objective":"dialog",
       "dialog": {
         "Degenerated Trader_t1": "Hi young adventurer ! How may I help you ?",
         "Me_t1": "I'm looking for the Emerald Gem, do you know where I could find it.",
