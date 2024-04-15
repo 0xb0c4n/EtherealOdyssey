@@ -78,12 +78,14 @@ def update():
   if(is_inside[characters_quest] == True and objective == "dialog"):
     if(i == len(original_dialog) - 1 and (correct_index == index or correct_index == "")):
       if(quest_list[int(questNumber)]["deploy"][secondQuestNumber] == quest_list[int(questNumber)]["deploy"][-1]):
+        if(quest_list[int(questNumber)]["reward"]):
+          reward = quest_list[int(questNumber)]["reward"]
+          if "spell_" in reward:
+            changeJson("0/unlocked", True, "data/spells.json")
         questNumber = int(questNumber) + 1.1
         launch = False
         changeJson("questNumber", questNumber, "data/player.json")
         dialog = ""
-        if(quest_list[int(questNumber)]["reward"]):
-          reward = quest_list[int(questNumber)]["reward"]
       else:
         dialog = ""
         i = 0
