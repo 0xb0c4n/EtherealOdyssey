@@ -6,17 +6,39 @@
     {
       "instruction": "Go see the Unknown Elder",
       "questNumber": 0.1,
-      "showed": true,
+      "showed": false,
       "finished": false,
       "dialog": {
-        "Unknown Elder_t1": "Hello young adventurer ! I presume your awakening \ngot easier than I expected.",
+        "Unknown Elder_t1": "Greetings, traveler. I see you're new to these lands.",
         "Me_t1": "Where am I ? Who am I ?",
-        "Unknown Elder_t2": "Welcome to Ethereum ! Your journey starts here...",
+        "Unknown Elder_t2": "Welcome to Ethereum ! Your journey starts here.",
         "Me_T2": "Wait... What's Ethereum ?",
-        "Unknown Elder_T3": "Ethereum is the one of the three worlds. A long time \nago, it was a land of peace and prosperity.",
+        "Unknown Elder_T3": "Ethereum is the one of the three worlds. A long time ago, it was a land of peace and prosperity.",
         "Me_T3": "And what happened ?",
-        "Unknown Elder_T4": "The Great Wizard Vitalik, creator of the dimension, once \nsuddently disappeared. "
+        "Unknown Elder_T4": "The Great Wizard Vitalik, creator of the dimension, once suddently disappeared. After this tragic event, malicious people have taken control of the city.",
+        "Me_T4": "Could you help me retablish the peace here ?",
+        "Unknown Elder_T5": "Well, you're in luck. I happen to know a thing or two about navigating these parts. Allow me to offer you some guidance.",
+        "Me_T5": "I'd appreciate any help you can provide. What do you suggest?",
+        "Unknown Elder_T6": "Have you heard of the Dash spell?",
+        "Me_T6": "Dash spell? No, I haven't. What does it do?",
+        "Unknown Elder_T7": "The Dash Spell allows you to slash your enemies with agility and velocity.",
+        "Me_T7": "That seems very cool to me. How can I obtain it ?",
+        "Unknown Elder_T8": "Well it's quite simple, just get me the Emerald Gem and I'll teach you the spell"
       }
+    },
+    {
+      "instruction": "Go find the Emerald Gem",
+      "questNumber": 0.2,
+      "showed": false,
+      "finished": false,
+      "dialog": {
+        "Degenerated Trader_t1": "Hi young adventurer ! How may I help you ?",
+        "Me_t1": "I'm looking for the Emerald Gem, do you know where I could find it.",
+        "Degenerated Trader_t2": "If you give me 1 ETH, I'll tell you how to get it",
+        "Me_T2": "I'd rather kill myself than give a stranger 1 ETH",
+        "Degenerated Trader_t3": "You adopted the good attitude. Never trust anybody, keep your money safe. Here is the Emerald Gem"
+      },
+      "reward": "Emerald Gem"
     }
   ]
 },

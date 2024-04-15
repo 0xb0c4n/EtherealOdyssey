@@ -9,5 +9,16 @@
     "size_y": 191,
     "position_x": 400,
     "position_y": 159
+  },
+  {
+    "name": "Degenerated Trader",
+    "questGiver": false,
+    "image_bank": 2,
+    "location_x": 227,
+    "location_y": 0,
+    "size_x": 29,
+    "size_y": 52,
+    "position_x": 600,
+    "position_y":177
   }
 ]

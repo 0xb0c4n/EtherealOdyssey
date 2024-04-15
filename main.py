@@ -2,6 +2,8 @@ import pyxel
 from deplacement import deplacement_x
 from quests import start_quest, launch_quest
 from get_jsondata import get_quests, get_player, get_spells, get_pnj
+from write import changeJson
+from random import randint
 
 run_sprite = [(48, 0, 38, 58), (88, 0, 29, 56), (120, 0, 32, 56),
               (152, 0, 33, 50), (192, 0, 43, 51), (0, 64, 31, 51)]
@@ -18,8 +20,11 @@ pyxel.init(500, 250, "Ethereal Odyssey", display_scale=2)
 pyxel.load("ressources.pyxres")
 pyxel.colors.from_list(pal)
 
+#Définition de toutes les variables pour les mettre dans la fonction draw
+
+showed = False
 perso_x = 0
-y = 165
+y = 169
 scroll_x = 0
 SCROLL_BORDER_X = 125
 animation = "fireball"
@@ -27,44 +32,45 @@ is_jumping = False
 is_descending = False
 is_inside = False
 launch = False
-title = ""
 dialog = {}
 character = ""
 i = 0
 quest_list = get_quests()
-instruction = ""
+questNumber = get_player()['questNumber']
+secondQuestNumber = int(str(questNumber % 1).split(".")[1]) - 1
+title = get_quests()[int(questNumber)]["title"]
+instruction = get_quests()[int(questNumber)]["deploy"][secondQuestNumber]["instruction"]
 game_launched = False
+direction = 1
+
+
 
 def update():
-  global perso_x, animation, direction, y, scroll_x, is_jumping, is_descending, is_inside, game_launched, title, launch, character, pnj_list, dialog, instruction, i
+  global perso_x, animation, direction, y, scroll_x, is_jumping, is_descending, is_inside, character_name, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i
 
   perso_x, animation, direction = deplacement_x(perso_x, 1)
   questNumber = get_player()['questNumber']
   dimension = get_player()["dimension"]
   pnj_list = get_pnj(dimension)
 
-  for elt in pnj_list:
-    if elt["questGiver"] == True:
-      is_inside = start_quest(perso_x, elt["position_x"])
-
   if perso_x > scroll_x + SCROLL_BORDER_X and direction == 1:
     scroll_x += 3
   elif perso_x < SCROLL_BORDER_X:
     scroll_x = 0
-  elif direction == -1:
+  elif direction == -1 and animation == "run":
     scroll_x -= 3
 
+  for elt in pnj_list:
+    if elt["questGiver"] == True:
+      is_inside = start_quest(perso_x, elt["position_x"])
+      character_name = elt["name"]
+      position_x = elt["position_x"]
   
   if(is_inside == True):
-    if(i == len(get_quests()[0]["deploy"][0]["dialog"])):
-      dialog = ""
-      quest_list[int(questNumber)]["deploy"][int(questNumber % 1)]["showed"] = False
-    else:
-      launch, title, dialog, character, instruction = launch_quest(questNumber, get_quests(), launch, title, dialog, character, instruction, i)
-    
-      if(pyxel.btnr(pyxel.KEY_J)):
-        i+=1
-
+    launch, dialog, character = launch_quest(questNumber, get_quests(), launch, dialog, character, i)
+      
+    if(pyxel.btnr(pyxel.KEY_J)):
+      i+=1
 
   if pyxel.btnr(pyxel.KEY_Z):
     animation = "fireball"
@@ -79,7 +85,7 @@ def update():
 
   if (y >= 149 and is_jumping == True):
     y -= 2
-  elif (is_descending == True and y <= 165):
+  elif (is_descending == True and y <= 169):
     y += 2
   elif (y <= 149):
     is_descending = True
@@ -108,20 +114,13 @@ def draw():
     
     for i in range(1400):
       pyxel.blt(41*i,250-21,2,1,74,41,21)
-    
+
     pyxel.blt(200, 0, 2, 47,0,128,100,21)
 
     if (is_inside == True):
-      pyxel.text(375, 130, "Press [E] to interact", 21)
-    
-    if(launch):
-      pyxel.text(scroll_x + 160, 5, title, 21)
-      pyxel.text(scroll_x + 150, 15, instruction, 21)
+      pyxel.text(position_x-15, 130, "Press [E] to interact", 21)
 
-    if character != "" and dialog != {} and dialog != "":  
-      pyxel.text(scroll_x + 20,135,character.split("_")[0], 21)
-      pyxel.text(scroll_x + 20,150,dialog[character],21)
-    #Animation
+ #Animation
     if (animation == "run" and is_jumping == False):
       coef = pyxel.frame_count // 5 % 5
       pyxel.blt(perso_x, y, 0, run_sprite[coef][0], run_sprite[coef][1],
@@ -137,5 +136,14 @@ def draw():
     else:
       pyxel.blt(perso_x, y, 0, 0, 0, 24*direction, 58, 0)
 
+    if character != "" and dialog != {} and dialog != "" and showed == False:  
+      pyxel.rect(scroll_x,170,500,100,23)
+      pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
+      pyxel.text(scroll_x + 20,215,dialog[character],21)
+      pyxel.text(scroll_x + 400, 230, "Press [J] to continue", 21)
+   
+    pyxel.rect(scroll_x + 390, 0, 110, 25, 23)
+    pyxel.text(scroll_x + 400, 5, title, 21)
+    pyxel.text(scroll_x + 400, 15, instruction, 21)
 
 pyxel.run(update, draw)
