@@ -76,7 +76,7 @@ def update():
       is_inside[character_name] = interact(perso_x, position_x)
 
   if(is_inside[characters_quest] == True and objective == "dialog"):
-    if(i == len(original_dialog) - 1 and (correct_index == index or correct_index == "")):
+    if(i == len(original_dialog) and (correct_index == index or correct_index == "")):
       if(quest_list[int(questNumber)]["deploy"][secondQuestNumber] == quest_list[int(questNumber)]["deploy"][-1]):
         if(quest_list[int(questNumber)]["reward"]):
           reward = quest_list[int(questNumber)]["reward"]
