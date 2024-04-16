@@ -29,7 +29,7 @@ def launch_quest(questNumber, questDict, launch, dialog, character, i, index):
     launch = True
     
   if(launch == True):
-    secondQuestNumber = int(str(questNumber % 1).split(".")[1]) - 1
+    secondQuestNumber = int(str(questNumber).split(".")[1]) - 1
     dialog = questDict[int(questNumber)]["deploy"][secondQuestNumber]["dialog"]
 
     if(index == None):
@@ -44,4 +44,3 @@ def launch_quest(questNumber, questDict, launch, dialog, character, i, index):
       character = character_list[-1]
 
   return launch, dialog, character
-

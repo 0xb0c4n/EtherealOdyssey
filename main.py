@@ -50,7 +50,7 @@ def update():
   pnj_list = get_pnj(dimension)
 
   questNumber = get_player()['questNumber']
-  secondQuestNumber = int(str(questNumber % 1).split(".")[1]) - 1
+  secondQuestNumber = int(str(questNumber).split(".")[1]) - 1
   deploy = quest_list[int(questNumber)]["deploy"]
   instruction = deploy[secondQuestNumber]["instruction"]
   title = quest_list[int(questNumber)]["title"]

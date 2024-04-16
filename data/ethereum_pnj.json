@@ -22,5 +22,17 @@
     "size_y": 52,
     "position_x": 600,
     "position_y":177
+  },
+  {
+    "name": "Original Block",
+    "questGiver": false,
+    "interactable": true,
+    "image_bank": 2,
+    "location_x": 227,
+    "location_y": 0,
+    "size_x": 29,
+    "size_y": 52,
+    "position_x": 600,
+    "position_y":177
   }
 ]

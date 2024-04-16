@@ -42,12 +42,10 @@
             "Degenerated Trader_t1": "You adopted the good attitude. Never trust anybody, keep your money safe. Here is the Emerald Gem."
           },
           {
-            "Me_t1": "[2] Of course I can give you 1 ETH ! Here it is",
-            "Degenerated Trader_t1": "Never trust the strangers ! (runs away with a stunning speed)"
+            "Me_t1": "[2] Of course I can give you 1 ETH ! Here it is"
           },
           {
-            "Me_t1": "[3] Sorry, I don't have 1 ETH",
-            "Degenerated Trader_t1": "Come back when you'll have 1 ETH ! You thought you could have it for free."
+            "Me_t1": "[3] Sorry, I don't have 1 ETH"
           }
         ]
       },
@@ -62,6 +60,41 @@
         "Unknown Elder_t1": "Greetings, traveler. You finally came back. Do you have what I asked to search for ?",
         "Me_t1": "Yes, I have it.",
         "Unknown Elder_t2": "Good ! Now, as I promised, I'll teach you the Dash spell. In order to use it, you'll have to press on [C]. \nCome on, try it !"
+      }
+    }
+  ]
+},
+{
+  "title": "Whispers of the blockchain",
+  "questNumber": 1,
+  "reward": "spell_FIREBALL",
+  "deploy": [
+    {
+      "character": "Unknown Elder",
+      "instruction": "Talk to the Unknown Elder",
+      "questNumber": 1.1,
+      "objective": "dialog",
+      "dialog": {
+        "Unknown Elder_t1": "Greetings, traveler. How can I help you ?",
+        "Me_t1": "I'm begging you for help to restablish the peace.",
+        "Unknown Elder_t2": "Unfortunately, with my age, I'm afraid I cannot help you.",
+        "Me_T2": "But how am I supposed to find the Great Sorcerer ?",
+        "Unknown Elder_T3": "I suggest you to go talk to the Original Block.",
+        "Me_T3": "What is the Original Block ?",
+        "Unknown Elder_T4": "It is the first block ever mined. It is now exposed as a memory of the Genesis.",
+        "Me_T4": "And how would it be helpful to me ?",
+        "Unknown Elder_T5": "Rumour has it when you are near enough to it, it speaks to you...",
+        "Me_T5": "Thanks for your help, I'll go right here."
+      }
+    },
+    {
+      "character": "Original Block",
+      "instruction": "Talk to the Original Block",
+      "questNumber": 1.2,
+      "objective": "dialog",
+      "dialog": {
+        "Original Block_t1": "(whispers) Come to me, come to me",
+        "Me_t1": ""
       }
     }
   ]
