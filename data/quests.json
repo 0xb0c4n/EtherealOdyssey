@@ -84,7 +84,8 @@
         "Unknown Elder_T4": "It is the first block ever mined. It is now exposed as a memory of the Genesis.",
         "Me_T4": "And how would it be helpful to me ?",
         "Unknown Elder_T5": "Rumour has it when you are near enough to it, it speaks to you...",
-        "Me_T5": "Thanks for your help, I'll go right here."
+        "Me_T5": "Thanks for your help, I'll go right here.",
+        "Unknown Elder_T6": "Don't worry, I'll teleport you right there..."
       }
     },
     {
@@ -93,9 +94,47 @@
       "questNumber": 1.2,
       "objective": "dialog",
       "dialog": {
-        "Original Block_t1": "(whispers) Come to me, come to me",
-        "Me_t1": ""
+        "_t1": "[You hear whispers which are louder every step you make]",
+        "Original Block_t1": "Welcome, traveler of the Etherverse. You have come seeking the ancient wisdom I have guarded since the dawn of time.",
+        "Me_t1": "What message do you whisper, O Genesis Block? I have come to seek the truth buried within the depths \nof the blockchain.",
+        "Original Block_t2": "The words I whisper are like echoes from the past, fragments of knowledge scattered across lines of code. But only one who can decipher my secrets can understand the true meaning of my words.",
+        "Me_T2": "Tell me, O Genesis Block, how can I unravel your whispers and pierce the veil of mystery that surrounds them?",
+        "Original Block_t3": "At the heart of my murmurs lies a key, an address that reveals a connection to the past and future of the Etherverse. But this address is encoded in the arcane of cryptography, and only one who masters the arts of decryption can find it.",
+        "Me_T3": "Show me the way, O Genesis Block. I will unravel the mysteries of your message and reveal the hidden wisdom within your words.",
+        "Original Block_t4": "May the light of the blockchain guide your path, traveler. The key you seek is buried within the symbols of cryptography. Find it, and you will unlock the doors of knowledge.",
+        "System_t1": "The Encrypted Message is : K dbwkxq wkh phdwlphu wr hqmrph uholqj Hxufkudq'v grpdq. Hqgrug sduwbdfklwb fdoohqj ph wrvh qljqdflwb dqg kljkqhq yhuwxuhv."
       }
+    },
+    {
+      "character": "Original Block",
+      "instruction": "Talk to the Original Block",
+      "questNumber": 1.2,
+      "objective": "dialog",
+      "dialog": {
+        "_t1": "[You hear whispers which are louder every step you make]",
+        "Original Block_t1": "Welcome, traveler of the Etherverse. You have come seeking the ancient wisdom I have guarded since the dawn of time.",
+        "Me_t1": "What message do you whisper, O Genesis Block? I have come to seek the truth buried within the depths \nof the blockchain.",
+        "Original Block_t2": "The words I whisper are like echoes from the past, fragments of knowledge scattered across lines of code. But only one who can decipher my secrets can understand the true meaning of my words.",
+        "Me_T2": "Tell me, O Genesis Block, how can I unravel your whispers and pierce the veil of mystery that surrounds them?",
+        "Original Block_t3": "At the heart of my murmurs lies a key, an address that reveals a connection to the past and future of the Etherverse. But this address is encoded in the arcane of cryptography, and only one who masters the arts of decryption can find it.",
+        "Me_T3": "Show me the way, O Genesis Block. I will unravel the mysteries of your message and reveal the hidden wisdom within your words.",
+        "Original Block_t4": "May the light of the blockchain guide your path, traveler. The key you seek is buried within the symbols of cryptography. Find it, and you will unlock the doors of knowledge.",
+        "System_t1": "The Encrypted Message is : K dbwkxq wkh phdwlphu wr hqmrph uholqj Hxufkudq'v grpdq. Hqgrug sduwbdfklwb fdoohqj ph wrvh qljqdflwb dqg kljkqhq yhuwxuhv."
+      }
+    },
+    {
+      "character": "Original Block",
+      "instruction": "Give the unciphered message",
+      "questNumber": 1.3,
+      "objective": "dialog",
+      "dialog": {
+        "Original Block_t1": "Greetings, traveller. Have you deciphered the message ?",
+        "Me_t1": "",
+        "Original Block_t2": {
+          "true": "It is the right answer. You can now go back into the Ethereum dimension",
+          "false": "Try again..."
+        }
+      }     
     }
   ]
 }
