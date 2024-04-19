@@ -40,9 +40,10 @@ game_launched = False
 direction = 1
 index = None
 input_text = ""
+subcharacter = ""
 
 def update():
-  global perso_x, animation, input_text, direction, state, dimension, y, scroll_x, is_jumping, is_descending, is_inside, character_name, index, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i, characters_quest, objective
+  global perso_x, subcharacter, input_text, animation, direction, state, dimension, y, scroll_x, is_jumping, is_descending, is_inside, character_name, index, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i, characters_quest, objective
 
   perso_x, animation, direction = deplacement_x(perso_x, 1, direction)
 
@@ -68,9 +69,6 @@ def update():
   pnj_list = get_pnj(dimension)
 
   pyxel.images[2].load(0,0,"assets/" + dimension + "_assets.png")
-
-  pyxel.images[1].load(0, 0, "assets/" + dimension +".png")
-
   if perso_x > scroll_x + SCROLL_BORDER_X and direction == 1:
     scroll_x += 3
   elif perso_x < SCROLL_BORDER_X:
@@ -85,27 +83,43 @@ def update():
       is_inside[character_name] = interact(perso_x, position_x)
 
   if(is_inside[characters_quest] == True and objective == "dialog"):
-    if(i == len(original_dialog) and (correct_index == index or correct_index == "")):
-      if(quest_list[int(questNumber)]["deploy"][secondQuestNumber] == quest_list[int(questNumber)]["deploy"][-1]):
-        if(quest_list[int(questNumber)]["reward"]):
-          reward = quest_list[int(questNumber)]["reward"]
-          if "spell_" in reward:
-            changeJson("0/unlocked", True, "data/spells.json")
-        questNumber = int(questNumber) + 1.1
-        launch = False
-        changeJson("questNumber", questNumber, "data/player.json")
-        dialog = ""
+    if(i == len(original_dialog) ):
+      if(correct_index == index or correct_index == ""):
+        if subcharacter == "" or subcharacter == "true":
+          if(quest_list[int(questNumber)]["deploy"][secondQuestNumber] == quest_list[int(questNumber)]["deploy"][-1]):
+            if(quest_list[int(questNumber)]["reward"]):
+              reward = quest_list[int(questNumber)]["reward"]
+              if "spell_" in reward:
+                changeJson("0/unlocked", True, "data/spells.json")
+            questNumber = int(questNumber) + 1.1
+            launch = False
+            changeJson("questNumber", questNumber, "data/player.json")
+            dialog = ""
+            input_text = ""
+            index = None
+          else:
+            dialog = ""
+            i = 0
+            questNumber = round(questNumber + 0.1, 1)
+            launch = False
+            index = None
+            changeJson("questNumber", questNumber, "data/player.json")
+            input_text = ""
+            if(questNumber == 1.2):
+              dimension = "genesis"
+              changeJson("dimension", dimension, "data/player.json")
+              pyxel.cls(0)
+            elif(questNumber == 1.4):
+              dimension = "ethereum"
+              changeJson("dimension", dimension, "data/player.json")
+              pyxel.cls(0)
+        else:
+          launch = False
+          dialog = ""
+          i = 0
+          index = None
+          input_text = ""
       else:
-        dialog = ""
-        i = 0
-        questNumber = round(questNumber + 0.1, 1)
-        launch = False
-        changeJson("questNumber", questNumber, "data/player.json")
-        if(questNumber == 1.2):
-          dimension = "genesis"
-          changeJson("dimension", dimension, "data/player.json")
-          pyxel.cls(0)
-    elif correct_index != index and index != None:
         launch = False
         dialog = ""
         i = 0
@@ -113,13 +127,28 @@ def update():
     else:
       launch, dialog, character = launch_quest(questNumber, quest_list, launch, dialog, character, i, index)
       if launch:
-        if type(dialog[character]) != str:
+        if type(dialog[character]) == list:
           if pyxel.btnr(pyxel.KEY_1):
               index = 0
           elif pyxel.btnr(pyxel.KEY_2):
               index = 1
           elif pyxel.btnr(pyxel.KEY_3):
               index = 2
+        elif dialog[character] == "":
+          for k in pyxel.__dict__.keys():
+            if k.startswith('KEY_'):
+                if pyxel.btn(getattr(pyxel, k)):
+                    if k == "KEY_RETURN":
+                      with open("data/message.txt") as f:
+                        f = f.read()    
+                        if input_text == f:
+                          i += 1
+                          subcharacter = "true"
+                          print(subcharacter)
+                        else:
+                          i+=1
+                          subcharacter="false"
+                          print(subcharacter)
         else:
           if(pyxel.btnr(pyxel.KEY_J)):
             i+=1
@@ -133,7 +162,7 @@ def update():
     if(pyxel.btnr(pyxel.KEY_E)):
       game_launched = True
 
-  if (pyxel.btnr(pyxel.KEY_SPACE) and is_jumping == False and is_descending == False):
+  if (pyxel.btnr(pyxel.KEY_SPACE) and is_jumping == False and is_descending == False and input_text == ""):
     is_jumping = True
 
 
@@ -150,6 +179,7 @@ def update():
 
 
 def draw():
+  global input_text
   if game_launched == False:
     pyxel.text(100, 10, "Ethereal Odyssey", 12)
     pyxel.text(40,100,"Press [E] to play (full screen highly recommended)", 12)
@@ -157,14 +187,17 @@ def draw():
     if dimension == "ethereum":
       pyxel.cls(0)
       pyxel.camera(scroll_x, 0)
+      pyxel.images[1].load(0,0,"assets/ethereum.png")
+
       for i in range(10):
         pyxel.blt(256*i, 0, 1, 0,0,256,177)
 
       for elt in pnj_list:
-        pyxel.blt(elt["position_x"], elt["position_y"], elt["image_bank"], elt["location_x"], elt["location_y"], elt["size_x"], elt["size_y"], 21)
+        if(type(elt["location_x"]) != list):
+          pyxel.blt(elt["position_x"], elt["position_y"], elt["image_bank"], elt["location_x"], elt["location_y"], elt["size_x"], elt["size_y"], 21)
 
-        if (is_inside[elt["name"]] == True and elt["name"] == characters_quest):
-          pyxel.text(elt["position_x"]-20, 140, "Press [E] to interact", 21)
+          if (is_inside[elt["name"]] == True and elt["name"] == characters_quest):
+            pyxel.text(elt["position_x"]-20, 140, "Press [E] to interact", 21)
       #Démarrage de la quête
       
       for i in range(1400):
@@ -206,9 +239,6 @@ def draw():
     elif dimension == "genesis":
       pyxel.cls(0)
       pyxel.camera(scroll_x, 0)
-      for i in range(3):
-        pyxel.blt(250*i, 100,1,0,0,250,177)
-
       if (animation == "run" and is_jumping == False):
         coef = pyxel.frame_count // 5 % 5
         pyxel.blt(perso_x, y, 0, run_sprite[coef][0], run_sprite[coef][1],
@@ -225,8 +255,9 @@ def draw():
         pyxel.blt(perso_x, y, 0, 0, 0, 24*direction, 58, 0)
 
       for elt in pnj_list:
-        coef = pyxel.frame_count // len(elt["location_x"]) % len(elt["location_x"])
-        pyxel.blt(elt["position_x"], elt["position_y"], elt["image_bank"], elt["location_x"][coef], elt["location_y"][coef], elt["size_x"][coef], elt["size_y"][coef], 0)
+        if elt["name"] == "Original Block":
+          coef = pyxel.frame_count // len(elt["location_x"]) % len(elt["location_x"])
+          pyxel.blt(elt["position_x"], elt["position_y"], elt["image_bank"], elt["location_x"][coef], elt["location_y"][coef], elt["size_x"][coef], elt["size_y"][coef], 0)
 
         if (is_inside[elt["name"]] == True and elt["name"] == characters_quest):
           pyxel.text(elt["position_x"]-20, 140, "Press [E] to interact", 21)
@@ -237,20 +268,29 @@ def draw():
           pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
           for i in range(len(dialog[character])):
             pyxel.text(scroll_x + 20,200+i*10,dialog[character][i]["Me_t1"], 21)
+        elif(type(dialog[character]) == dict):
+          pyxel.rect(scroll_x,170,500,100,23)
+          pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
+          pyxel.text(scroll_x + 20, 200, dialog[character][subcharacter], 21)       
+          pyxel.text(scroll_x + 400, 230, "Press [J] to continue", 21)  
         elif(dialog[character] == ""):
           pyxel.rect(scroll_x,170,500,100,23)
           pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
-          pyxel.text(scroll_x + 20, 215, input_text, 21)
-          for key in range(pyxel.KEY_A, pyxel.KEY_Z + 1):
-            if pyxel.btnp(key):
-                input_text += chr(ord('A') + (key - pyxel.KEY_A))
-        
-          if pyxel.btnp(pyxel.KEY_SPACE):
-              input_text += " "
+          pyxel.text(scroll_x + 20, 200, input_text, 21)
+          if len(input_text) < 133:
+            for key in range(pyxel.KEY_A, pyxel.KEY_Z + 1):
+              if pyxel.btnp(key):
+                  input_text += chr(ord('A') + (key - pyxel.KEY_A))
           
-          if pyxel.btnp(pyxel.KEY_BACKSPACE) and len(input_text) > 0:
-              input_text = input_text[:-1]
-
+            if pyxel.btnp(pyxel.KEY_SPACE):
+                input_text += " "
+            
+            if pyxel.btnp(pyxel.KEY_BACKSPACE) and len(input_text) > 0:
+                input_text = input_text[:-1]
+              
+            if pyxel.btnp(pyxel.KEY_PERIOD):
+              input_text += "'"
+        
           pyxel.text(scroll_x + 390, 230, "Press [ENTER] to continue", 21)
         else:
           pyxel.rect(scroll_x,170,500,100,23)

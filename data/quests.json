@@ -48,12 +48,11 @@
             "Me_t1": "[3] Sorry, I don't have 1 ETH"
           }
         ]
-      },
-      "reward": "EmeraldGem"
+      }
     },
     {
       "character": "Unknown Elder",
-      "instruction": "Return the Gem to the Unknown Elder",
+      "instruction": "Return the Emerald Gem",
       "questNumber": 0.3,
       "objective":"dialog",
       "dialog": {
@@ -67,7 +66,7 @@
 {
   "title": "Whispers of the blockchain",
   "questNumber": 1,
-  "reward": "spell_FIREBALL",
+  "reward": "",
   "deploy": [
     {
       "character": "Unknown Elder",
@@ -95,31 +94,14 @@
       "objective": "dialog",
       "dialog": {
         "_t1": "[You hear whispers which are louder every step you make]",
-        "Original Block_t1": "Welcome, traveler of the Etherverse. You have come seeking the ancient wisdom I have guarded since the dawn of time.",
+        "Original Block_t1": "Welcome, traveler of the Etherverse. You have come seeking the ancient wisdom I \nhave guarded since the dawn of time.",
         "Me_t1": "What message do you whisper, O Genesis Block? I have come to seek the truth buried within the depths \nof the blockchain.",
-        "Original Block_t2": "The words I whisper are like echoes from the past, fragments of knowledge scattered across lines of code. But only one who can decipher my secrets can understand the true meaning of my words.",
+        "Original Block_t2": "The words I whisper are like echoes from the past, fragments of knowledge scattered across \nlines of code. But only one who can decipher my secrets can understand the true meaning of my words.",
         "Me_T2": "Tell me, O Genesis Block, how can I unravel your whispers and pierce the veil of mystery that surrounds them?",
-        "Original Block_t3": "At the heart of my murmurs lies a key, an address that reveals a connection to the past and future of the Etherverse. But this address is encoded in the arcane of cryptography, and only one who masters the arts of decryption can find it.",
-        "Me_T3": "Show me the way, O Genesis Block. I will unravel the mysteries of your message and reveal the hidden wisdom within your words.",
-        "Original Block_t4": "May the light of the blockchain guide your path, traveler. The key you seek is buried within the symbols of cryptography. Find it, and you will unlock the doors of knowledge.",
-        "System_t1": "The Encrypted Message is : K dbwkxq wkh phdwlphu wr hqmrph uholqj Hxufkudq'v grpdq. Hqgrug sduwbdfklwb fdoohqj ph wrvh qljqdflwb dqg kljkqhq yhuwxuhv."
-      }
-    },
-    {
-      "character": "Original Block",
-      "instruction": "Talk to the Original Block",
-      "questNumber": 1.2,
-      "objective": "dialog",
-      "dialog": {
-        "_t1": "[You hear whispers which are louder every step you make]",
-        "Original Block_t1": "Welcome, traveler of the Etherverse. You have come seeking the ancient wisdom I have guarded since the dawn of time.",
-        "Me_t1": "What message do you whisper, O Genesis Block? I have come to seek the truth buried within the depths \nof the blockchain.",
-        "Original Block_t2": "The words I whisper are like echoes from the past, fragments of knowledge scattered across lines of code. But only one who can decipher my secrets can understand the true meaning of my words.",
-        "Me_T2": "Tell me, O Genesis Block, how can I unravel your whispers and pierce the veil of mystery that surrounds them?",
-        "Original Block_t3": "At the heart of my murmurs lies a key, an address that reveals a connection to the past and future of the Etherverse. But this address is encoded in the arcane of cryptography, and only one who masters the arts of decryption can find it.",
-        "Me_T3": "Show me the way, O Genesis Block. I will unravel the mysteries of your message and reveal the hidden wisdom within your words.",
-        "Original Block_t4": "May the light of the blockchain guide your path, traveler. The key you seek is buried within the symbols of cryptography. Find it, and you will unlock the doors of knowledge.",
-        "System_t1": "The Encrypted Message is : K dbwkxq wkh phdwlphu wr hqmrph uholqj Hxufkudq'v grpdq. Hqgrug sduwbdfklwb fdoohqj ph wrvh qljqdflwb dqg kljkqhq yhuwxuhv."
+        "Original Block_t3": "At the heart of my murmurs lies a key, an address that reveals a connection to the past and future of the Etherverse. \nBut this address is encoded in the arcane of cryptography, and only one who masters the arts of decryption can find it.",
+        "Me_T3": "Show me the way, O Genesis Block. I will unravel the mysteries of your message and reveal the hidden wisdom within \nyour words.",
+        "Original Block_t4": "May the light of the blockchain guide your path, traveler. The key you seek is buried within the symbols of \ncryptography. Find it, and you will unlock the doors of knowledge.",
+        "System_t1": "The Encrypted Message is : L DZDLW WKH DGXFDUHU WR ILQG QHZ FKDQJHOHV DQG KLQGHQ WUHVWHV"
       }
     },
     {
@@ -135,6 +117,19 @@
           "false": "Try again..."
         }
       }     
+    },
+    {
+      "character": "Unknown Elder",
+      "instruction": "Talk to the Unknown Elder",
+      "questNumber": 1.4,
+      "objective": "dialog",
+      "dialog": {
+        "Unknown Elder_t1": "Greetings, traveler. How was your meeting ?",
+        "Me_t1": "I am now aware of Vitalik's vision. I have to free this world, and I have to defeat him...",
+        "Unknown Elder_t2": "You're not ready yet, you'll have to train a lot. But I think you are the only one that can defeat him.",
+        "Me_T2": "How do you know this ?",
+        "Unknown Elder_T3": "(laughs) Don't worry young traveler, it's just an intuition... Don't believe an old and crazy man who already has a \nfoot in his grave."
+      }
     }
   ]
 }

@@ -1,7 +1,5 @@
 import pyxel
 
-i = 0
-
 def calc_hitbox(pos_x):
   """Renvoie la hitbox d'un objet (string)
   Prend en paramètre les coordonnées x  de l'objet (integer)"""
@@ -31,16 +29,16 @@ def launch_quest(questNumber, questDict, launch, dialog, character, i, index):
   if(launch == True):
     secondQuestNumber = int(str(questNumber).split(".")[1]) - 1
     dialog = questDict[int(questNumber)]["deploy"][secondQuestNumber]["dialog"]
-
-    if(index == None):
-      if dialog != {}:
+    if(type(dialog) != str):
+      if(index == None):
+        if dialog != {}:
+          character_list = list(dialog.keys())
+          character = character_list[i]
+      else:
         character_list = list(dialog.keys())
         character = character_list[i]
-    else:
-      character_list = list(dialog.keys())
-      character = character_list[i]
-      dialog = dialog[character][index]
-      character_list = list(dialog.keys())
-      character = character_list[-1]
+        dialog = dialog[character][index]
+        character_list = list(dialog.keys())
+        character = character_list[-1]
 
   return launch, dialog, character
