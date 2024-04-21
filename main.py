@@ -15,7 +15,8 @@ fireball_sprite = [(0, 184, 32, 56), (32, 184, 39, 56), (72, 184, 48, 53),
 pal = [0x1b2954,0x8c938c,0x5a3936,0x28222c,0x4c505b,0x73522d,
        0x83604f,0x3c4c54,0xc49892,0x3c445c,0x6c6e6c,0x7c706a,
        0x6c6468,0xf3b340,0xe68d02,0xffb228,0xAF082D,0x83213C,
-       0xF35C5C,0x2D2E4D,0x316595,0xffffff,0x3fb34e,0x000000]
+       0xF35C5C,0x2D2E4D,0x316595,0xffffff,0x3fb34e,0x000000,
+       0x171724]
 
 pyxel.init(500, 250, "Ethereal Odyssey", display_scale=2)
 pyxel.load("ressources.pyxres")
@@ -41,7 +42,6 @@ direction = 1
 index = None
 input_text = ""
 subcharacter = ""
-
 def update():
   global perso_x, subcharacter, input_text, animation, direction, state, dimension, y, scroll_x, is_jumping, is_descending, is_inside, character_name, index, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i, characters_quest, objective
 
@@ -69,6 +69,7 @@ def update():
   pnj_list = get_pnj(dimension)
 
   pyxel.images[2].load(0,0,"assets/" + dimension + "_assets.png")
+  pyxel.images[1].load(0,0,"assets/"+ dimension +".png")
   if perso_x > scroll_x + SCROLL_BORDER_X and direction == 1:
     scroll_x += 3
   elif perso_x < SCROLL_BORDER_X:
@@ -165,8 +166,8 @@ def update():
   if (pyxel.btnr(pyxel.KEY_SPACE) and is_jumping == False and is_descending == False and input_text == ""):
     is_jumping = True
 
-
-  if (y >= 149 and is_jumping == True):
+    
+  elif (y >= 149 and is_jumping == True):
     y -= 2
   elif (is_descending == True and y <= 169):
     y += 2
@@ -187,7 +188,6 @@ def draw():
     if dimension == "ethereum":
       pyxel.cls(0)
       pyxel.camera(scroll_x, 0)
-      pyxel.images[1].load(0,0,"assets/ethereum.png")
 
       for i in range(10):
         pyxel.blt(256*i, 0, 1, 0,0,256,177)
@@ -239,6 +239,8 @@ def draw():
     elif dimension == "genesis":
       pyxel.cls(0)
       pyxel.camera(scroll_x, 0)
+      for i in range(10):
+        pyxel.blt(253*i,0,1,0,0,256,256)
       if (animation == "run" and is_jumping == False):
         coef = pyxel.frame_count // 5 % 5
         pyxel.blt(perso_x, y, 0, run_sprite[coef][0], run_sprite[coef][1],

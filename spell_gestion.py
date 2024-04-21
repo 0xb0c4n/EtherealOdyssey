@@ -10,6 +10,4 @@ def which_spell():
 
 def is_spell_in_hitbox(spell_name, hitbox):
   """Renvoie True si le sort est dans la hitbox (str), False sinon (booléen)"""
-  if 
-  
   return False
