@@ -146,10 +146,16 @@
       "dialog": {
         "Unknown Elder_t1": "Greetings, traveler. I now have a mission for you.",
         "Me_t1": "Oh really ?! And what would I get in exchange ?",
-        "Unknown Elder_t2": "In exchange, I'll teach you the Fireball spell, which could be very useful for you !",
-        "Me_T2": "How do you know this ?",
-        "Unknown Elder_T3": "(laughs) Don't worry young traveler, it's just an intuition... Don't believe an old and crazy man who already has a \nfoot in his grave."
+        "Unknown Elder_t2": "In exchange, I'll teach you the Fireball spell, which could be very useful for you in your quest !",
+        "Me_T2": "That's okay, I accept then...",
+        "Unknown Elder_T3": "Two days ago, a group of miners disappeared in the Ethereum Mines. You have to find them in order to achieve the quest."
       }
+    },
+    {
+      "character": "",
+      "instruction": "Enter in the mine",
+      "questNumber": 2.2,
+      "objective": "interact"
     }
   ]
 }

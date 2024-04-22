@@ -16,10 +16,10 @@
     "questGiver": false,
     "interactable": true,
     "image_bank": 2,
-    "location_x": 227,
+    "location_x": 224,
     "location_y": 0,
-    "size_x": 29,
-    "size_y": 52,
+    "size_x": 32,
+    "size_y": 58,
     "position_x": 600,
     "position_y":177
   }

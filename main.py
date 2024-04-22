@@ -16,7 +16,7 @@ pal = [0x1b2954,0x8c938c,0x5a3936,0x28222c,0x4c505b,0x73522d,
        0x83604f,0x3c4c54,0xc49892,0x3c445c,0x6c6e6c,0x7c706a,
        0x6c6468,0xf3b340,0xe68d02,0xffb228,0xAF082D,0x83213C,
        0xF35C5C,0x2D2E4D,0x316595,0xffffff,0x3fb34e,0x000000,
-       0x171724,0x3d232a]
+       0x171724,0x3d232a,0x232b5c]
 
 pyxel.init(500, 250, "Ethereal Odyssey", display_scale=2)
 pyxel.load("ressources.pyxres")
@@ -69,7 +69,6 @@ def update():
   pnj_list = get_pnj(dimension)
 
   pyxel.images[2].load(0,0,"assets/" + dimension + "_assets.png")
-  pyxel.images[1].load(0,0,"assets/"+ dimension +".png")
   if perso_x > scroll_x + SCROLL_BORDER_X and direction == 1:
     scroll_x += 3
   elif perso_x < SCROLL_BORDER_X:
@@ -185,7 +184,8 @@ def draw():
     pyxel.text(100, 10, "Ethereal Odyssey", 12)
     pyxel.text(40,100,"Press [E] to play (full screen highly recommended)", 12)
   else:
-    if dimension == "ethereum":
+    if get_player()["dimension"] == "ethereum":
+      pyxel.images[1].load(0,0,"assets/ethereum.png")
       pyxel.cls(0)
       pyxel.camera(scroll_x, 0)
 
@@ -236,9 +236,10 @@ def draw():
       pyxel.rect(scroll_x + 370, 0, 130, 25, 23)
       pyxel.text(scroll_x + 380, 5, title, 21)
       pyxel.text(scroll_x + 380, 15, instruction, 21)
-    elif dimension == "genesis":
+    elif get_player()["dimension"] == "genesis":
       pyxel.cls(0)
       pyxel.camera(scroll_x, 0)
+      pyxel.images[1].load(0,0,"assets/genesis.png")
       for i in range(10):
         pyxel.blt(127*i,0,1,0,0,127,256)
       for j in range(5):
@@ -261,7 +262,7 @@ def draw():
       for elt in pnj_list:
         if elt["name"] == "Original Block":
           coef = pyxel.frame_count // len(elt["location_x"]) % len(elt["location_x"])
-          pyxel.blt(elt["position_x"], elt["position_y"], elt["image_bank"], elt["location_x"][coef], elt["location_y"][coef], elt["size_x"][coef], elt["size_y"][coef], 0)
+          pyxel.blt(elt["position_x"], 225-elt["size_y"][coef], elt["image_bank"], elt["location_x"][coef], elt["location_y"][coef], elt["size_x"][coef], elt["size_y"][coef], 0)
 
         if (is_inside[elt["name"]] == True and elt["name"] == characters_quest):
           pyxel.text(elt["position_x"]-20, 140, "Press [E] to interact", 21)
