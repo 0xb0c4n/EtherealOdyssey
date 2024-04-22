@@ -16,7 +16,7 @@ pal = [0x1b2954,0x8c938c,0x5a3936,0x28222c,0x4c505b,0x73522d,
        0x83604f,0x3c4c54,0xc49892,0x3c445c,0x6c6e6c,0x7c706a,
        0x6c6468,0xf3b340,0xe68d02,0xffb228,0xAF082D,0x83213C,
        0xF35C5C,0x2D2E4D,0x316595,0xffffff,0x3fb34e,0x000000,
-       0x171724]
+       0x171724,0x3d232a]
 
 pyxel.init(500, 250, "Ethereal Odyssey", display_scale=2)
 pyxel.load("ressources.pyxres")
@@ -240,7 +240,9 @@ def draw():
       pyxel.cls(0)
       pyxel.camera(scroll_x, 0)
       for i in range(10):
-        pyxel.blt(253*i,0,1,0,0,256,256)
+        pyxel.blt(127*i,0,1,0,0,127,256)
+      for j in range(5):
+        pyxel.blt(1270+114*j,0,1,127,0,114,256)
       if (animation == "run" and is_jumping == False):
         coef = pyxel.frame_count // 5 % 5
         pyxel.blt(perso_x, y, 0, run_sprite[coef][0], run_sprite[coef][1],
