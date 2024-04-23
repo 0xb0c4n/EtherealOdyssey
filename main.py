@@ -50,6 +50,7 @@ def update():
   state = ""
   quest_list = get_quests()
   dimension = get_player()["dimension"]
+  
 
   questNumber = get_player()['questNumber']
   
@@ -64,11 +65,11 @@ def update():
   else:
     correct_index = ""
 
-  original_dialog = deploy[secondQuestNumber]["dialog"]
   dimension = get_player()["dimension"]
   pnj_list = get_pnj(dimension)
 
   pyxel.images[2].load(0,0,"assets/" + dimension + "_assets.png")
+  pyxel.images[1].load(0,0,"assets/"+ dimension + ".png")
   if perso_x > scroll_x + SCROLL_BORDER_X and direction == 1:
     scroll_x += 3
   elif perso_x < SCROLL_BORDER_X:
@@ -83,6 +84,7 @@ def update():
       is_inside[character_name] = interact(perso_x, position_x)
 
   if(is_inside[characters_quest] == True and objective == "dialog"):
+    original_dialog = deploy[secondQuestNumber]["dialog"]
     if(i == len(original_dialog) ):
       if(correct_index == index or correct_index == ""):
         if subcharacter == "" or subcharacter == "true":
@@ -92,6 +94,7 @@ def update():
               if "spell_" in reward:
                 changeJson("0/unlocked", True, "data/spells.json")
             questNumber = int(questNumber) + 1.1
+            print(questNumber)
             launch = False
             changeJson("questNumber", questNumber, "data/player.json")
             dialog = ""
@@ -108,11 +111,9 @@ def update():
             if(questNumber == 1.2):
               dimension = "genesis"
               changeJson("dimension", dimension, "data/player.json")
-              pyxel.cls(0)
             elif(questNumber == 1.4):
               dimension = "ethereum"
               changeJson("dimension", dimension, "data/player.json")
-              pyxel.cls(0)
         else:
           launch = False
           dialog = ""
@@ -144,11 +145,9 @@ def update():
                         if input_text == f:
                           i += 1
                           subcharacter = "true"
-                          print(subcharacter)
                         else:
                           i+=1
                           subcharacter="false"
-                          print(subcharacter)
         else:
           if(pyxel.btnr(pyxel.KEY_J)):
             i+=1
@@ -184,10 +183,9 @@ def draw():
     pyxel.text(100, 10, "Ethereal Odyssey", 12)
     pyxel.text(40,100,"Press [E] to play (full screen highly recommended)", 12)
   else:
-    if get_player()["dimension"] == "ethereum":
-      pyxel.images[1].load(0,0,"assets/ethereum.png")
-      pyxel.cls(0)
+    if dimension == "ethereum":
       pyxel.camera(scroll_x, 0)
+      pyxel.cls(0)
 
       for i in range(10):
         pyxel.blt(256*i, 0, 1, 0,0,256,177)
@@ -201,7 +199,7 @@ def draw():
       #Démarrage de la quête
       
       for i in range(1400):
-        pyxel.blt(41*i,250-21,2,1,74,41,21)
+        pyxel.blt(41*i,250-21,2,0,74,41,21)
 
       pyxel.blt(200, 0, 2, 47,0,128,100,21)
 
@@ -236,10 +234,10 @@ def draw():
       pyxel.rect(scroll_x + 370, 0, 130, 25, 23)
       pyxel.text(scroll_x + 380, 5, title, 21)
       pyxel.text(scroll_x + 380, 15, instruction, 21)
-    elif get_player()["dimension"] == "genesis":
-      pyxel.cls(0)
+    elif dimension == "genesis":
       pyxel.camera(scroll_x, 0)
-      pyxel.images[1].load(0,0,"assets/genesis.png")
+      pyxel.cls(0)
+      
       for i in range(10):
         pyxel.blt(127*i,0,1,0,0,127,256)
       for j in range(5):

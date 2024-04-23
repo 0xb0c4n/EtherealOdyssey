@@ -11,7 +11,7 @@ def changeJson(key, value, file):
         modify_key = data
         for i in range(len(key_parts)):
             for char in key_parts[i]:
-                print(char)
+                
                 if char.isdigit():
                     key_parts[i] = int(key_parts[i])
             if i == len(key_parts) - 1:
