@@ -185,10 +185,7 @@ def draw():
     pyxel.text(100, 10, "Ethereal Odyssey", 12)
     pyxel.text(40,100,"Press [E] to play (full screen highly recommended)", 12)
   else:
-    if clear == True:
-      pyxel.cls(0)
-      for i in range(10):
-    elif get_player()["dimension"] == "ethereum":
+    if get_player()["dimension"] == "ethereum":
       pyxel.images[1].load(0,0,"assets/ethereum.png")
       pyxel.cls(0)
       pyxel.camera(scroll_x, 0)
@@ -205,7 +202,7 @@ def draw():
       #Démarrage de la quête
       
       for i in range(1400):
-        pyxel.blt(41*i,250-21,2,1,74,41,21)
+        pyxel.blt(41*i,250-21,2,0,74,41,21)
 
       pyxel.blt(200, 0, 2, 47,0,128,100,21)
 
