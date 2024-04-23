@@ -1,0 +1,14 @@
+[
+    {
+      "name": "Rich Miner",
+      "questGiver": true,
+      "interactable": true,
+      "image_bank": 2,
+      "location_x": 0,
+      "location_y": 0,
+      "size_x": 36,
+      "size_y": 191,
+      "position_x": 400,
+      "position_y": 159
+    }
+  ]
