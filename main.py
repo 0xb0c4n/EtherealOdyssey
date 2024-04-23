@@ -42,8 +42,10 @@ direction = 1
 index = None
 input_text = ""
 subcharacter = ""
+clear = False 
+
 def update():
-  global perso_x, subcharacter, input_text, animation, direction, state, dimension, y, scroll_x, is_jumping, is_descending, is_inside, character_name, index, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i, characters_quest, objective
+  global perso_x, clear, subcharacter, input_text, animation, direction, state, dimension, y, scroll_x, is_jumping, is_descending, is_inside, character_name, index, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i, characters_quest, objective
 
   perso_x, animation, direction = deplacement_x(perso_x, 1, direction)
 
@@ -108,11 +110,10 @@ def update():
             if(questNumber == 1.2):
               dimension = "genesis"
               changeJson("dimension", dimension, "data/player.json")
-              pyxel.cls(0)
             elif(questNumber == 1.4):
               dimension = "ethereum"
               changeJson("dimension", dimension, "data/player.json")
-              pyxel.cls(0)
+              clear = True
         else:
           launch = False
           dialog = ""
@@ -184,7 +185,10 @@ def draw():
     pyxel.text(100, 10, "Ethereal Odyssey", 12)
     pyxel.text(40,100,"Press [E] to play (full screen highly recommended)", 12)
   else:
-    if get_player()["dimension"] == "ethereum":
+    if clear == True:
+      pyxel.cls(0)
+      for i in range(10):
+    elif get_player()["dimension"] == "ethereum":
       pyxel.images[1].load(0,0,"assets/ethereum.png")
       pyxel.cls(0)
       pyxel.camera(scroll_x, 0)
