@@ -42,8 +42,10 @@ direction = 1
 index = None
 input_text = ""
 subcharacter = ""
+clear = False 
+
 def update():
-  global perso_x, subcharacter, input_text, animation, direction, state, dimension, y, scroll_x, is_jumping, is_descending, is_inside, character_name, index, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i, characters_quest, objective
+  global perso_x, clear, subcharacter, input_text, animation, direction, state, dimension, y, scroll_x, is_jumping, is_descending, is_inside, character_name, index, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i, characters_quest, objective
 
   perso_x, animation, direction = deplacement_x(perso_x, 1, direction)
 
@@ -237,7 +239,7 @@ def draw():
     elif dimension == "genesis":
       pyxel.camera(scroll_x, 0)
       pyxel.cls(0)
-      
+
       for i in range(10):
         pyxel.blt(127*i,0,1,0,0,127,256)
       for j in range(5):
