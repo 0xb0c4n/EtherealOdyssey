@@ -3,6 +3,7 @@ from deplacement import deplacement_x
 from quests import interact, launch_quest
 from get_jsondata import get_quests, get_player, get_spells, get_pnj
 from write import changeJson
+from spawn import spawn_ressources
 
 run_sprite = [(48, 0, 38, 58), (88, 0, 29, 56), (120, 0, 32, 56),
               (152, 0, 33, 50), (192, 0, 43, 51), (0, 64, 31, 51)]
@@ -15,7 +16,12 @@ pal = [0x1b2954,0x8c938c,0x5a3936,0x28222c,0x4c505b,0x73522d,
        0x83604f,0x3c4c54,0xc49892,0x3c445c,0x6c6e6c,0x7c706a,
        0x6c6468,0xf3b340,0xe68d02,0xffb228,0xAF082D,0x83213C,
        0xF35C5C,0x2D2E4D,0x316595,0xffffff,0x3fb34e,0x000000,
-       0x171724,0x3d232a,0x232b5c]
+       0x171724,0x3d232a,0x232b5c,0xfedba7]
+
+platform_mine = [(0, 232, 1), (232, 261, 2), (261, 290, 3), (290, 319, 4), (319, 348, 3), 
+                 (348, 609, 2), (609, 638, 1), (638, 667, 2), (667, 696, 3), 
+                 (696, 725, 4), (725, 754, 3), (754, 783, 2), (783, 812, 1), (812, 841, 2), (841, 870, 3), 
+                 (870, 899, 3), (899, 928, 3), (928, 957, 3), (957, 986, 3), (986, 2900, 2)]
 
 pyxel.init(500, 250, "Ethereal Odyssey", display_scale=2)
 pyxel.load("ressources.pyxres")
@@ -25,29 +31,43 @@ pyxel.colors.from_list(pal)
 showed = False
 perso_x = 0
 y = 169
+velocity_y = 0
 scroll_x = 0
 SCROLL_BORDER_X = 125
-animation = "fireball"
+animation = "idle"
+
 is_jumping = False
-is_descending = False
+
 is_inside = {}
 launch = False
 dialog = {}
 character = ""
 i = 0
 game_launched = False
+
 direction = 1
+
 index = None
 input_text = ""
 subcharacter = ""
-clear = False 
+
+block_left = False
+block_right = False
+
+completion = 0
+
+ressources_mine = spawn_ressources(0,2900,platform_mine)
+
+def get_ground_height(x):
+  for tuple in platform_mine:
+    if tuple[0] <= x < tuple[1]:
+      return tuple[2]
 
 def update():
-  global perso_x, clear, subcharacter, input_text, animation, direction, state, dimension, y, scroll_x, is_jumping, is_descending, is_inside, character_name, index, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i, characters_quest, objective
+  global perso_x, block_left, deploy, secondQuestNumber, completion, questNumber, velocity_y, block_right, subcharacter, input_text, animation, direction, dimension, y, scroll_x, is_jumping, is_inside, character_name, index, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i, characters_quest, objective
 
-  perso_x, animation, direction = deplacement_x(perso_x, 1, direction)
+  perso_x, animation, direction = deplacement_x(perso_x, 1, direction, block_left, block_right)
 
-  state = ""
   quest_list = get_quests()
   dimension = get_player()["dimension"]
 
@@ -64,23 +84,58 @@ def update():
   else:
     correct_index = ""
 
+  if questNumber == 2.4:
+      completion = deploy[secondQuestNumber]["completion"]
+      if completion == 5:
+          dialog = ""
+          i = 0
+          questNumber = round(questNumber + 0.1, 1)
+          launch = False
+          index = None
+          changeJson("questNumber", questNumber, "data/player.json")
+          input_text = ""
+
   dimension = get_player()["dimension"]
   pnj_list = get_pnj(dimension)
-  if (pyxel.btnr(pyxel.KEY_SPACE) and is_jumping == False and is_descending == False and input_text == ""):
+
+  if(dimension == "mine"):
+    if(not is_jumping):
+      for ind in range(len(platform_mine)):
+        x1,x2,tup_y = platform_mine[ind][0], platform_mine[ind][1], platform_mine[ind][2]
+        if x2 == perso_x + 28 and platform_mine[ind+1][2] > tup_y and direction == 1:
+          block_left = False
+          block_right = True
+        elif x1 == perso_x and platform_mine[ind-1][2] > tup_y and direction == -1:
+          block_left = True
+          block_right = False
+        elif x1 < perso_x < x2:
+          block_left = False
+          block_right = False
+    else:
+      block_right = False
+      block_left = False
+
+  if (pyxel.btnr(pyxel.KEY_SPACE) and not is_jumping and input_text == ""):
     is_jumping = True
-  
-  if (y >= 149 and is_jumping == True):
-    y -= 2
-  elif (is_descending == True and y <= 169):
-    y += 2
-  elif (y <= 149):
-    is_descending = True
-    is_jumping = False
+    velocity_y = -5
+
+  velocity_y += 0.2  
+  y += velocity_y
+
+  velocity_y = min(velocity_y, 5)
+  if dimension == "mine":
+    if direction == 1:
+      if y >= 256-get_ground_height(perso_x+25)*30-58: 
+          is_jumping = False
+          y = 256-get_ground_height(perso_x+25)*30-58
+    elif direction == -1:
+      if y >= 256-get_ground_height(perso_x)*30-58: 
+            is_jumping = False
+            y = 256-get_ground_height(perso_x)*30-58
   else:
-    is_descending = False
-    is_jumping = False
-  
-  return y
+    if y >= 169:
+      is_jumping = False
+      y = 169
 
   pyxel.images[2].load(0,0,"assets/" + dimension + "_assets.png")
   pyxel.images[1].load(0,0,"assets/"+ dimension + ".png")
@@ -129,6 +184,18 @@ def update():
             elif(questNumber == 1.4):
               dimension = "ethereum"
               changeJson("dimension", dimension, "data/player.json")
+            elif(questNumber == 2.2):
+              dimension = "mine"
+              changeJson("dimension", dimension, "data/player.json")
+              dialog = ""
+              i = 0
+              questNumber = round(questNumber + 0.1, 1)
+              launch = False
+              index = None
+              changeJson("questNumber", questNumber, "data/player.json")
+              input_text = ""
+
+
         else:
           launch = False
           dialog = ""
@@ -176,9 +243,6 @@ def update():
     if(pyxel.btnr(pyxel.KEY_E)):
       game_launched = True
 
-
-
-
 def draw():
   global input_text
   if game_launched == False:
@@ -188,10 +252,11 @@ def draw():
     if dimension == "mine":
       pyxel.camera(scroll_x, 0)
       pyxel.cls(0)
-      pyxel.tilemaps[0].load(0,0,"assets/mine.tmx",0)
-      pyxel.bltm(0,0,0,0,0,256,256)
-      for i in range(10):
+      for i in range(20):
         pyxel.blt(256*i, 0, 1, 0,0,256,256)
+
+      for elt in ressources_mine:
+        pyxel.blt(elt[0], elt[1], 2, 58, 0, 33,29,21)
 
       for elt in pnj_list:
         if(type(elt["location_x"]) != list):
@@ -199,7 +264,28 @@ def draw():
 
           if (elt["interactable"] == True and is_inside[elt["name"]] == True and elt["name"] == characters_quest):
             pyxel.text(elt["position_x"]-20, 140, "Press [E] to interact", 21)
+        
+      if questNumber == 2.4:
+        for elt in ressources_mine:
+          is_inside_mine = interact(perso_x, elt[0])
+          if(is_inside_mine):
+            pyxel.text(elt[0], 140, "[E] Mine", 21)
+            if(pyxel.btnp(pyxel.KEY_E)):
+              changeJson("2/deploy/3/completion", completion+1, "data/quests.json")
+              ressources_mine.remove(elt)
 
+
+      for tuple in platform_mine:
+        x1 = tuple[0]
+        x2 = tuple[1]
+        tup_y = tuple[2]
+        coef_ind = (x2-x1) // 29
+        for i in range(coef_ind):
+          pyxel.blt(x1+29*i,256-30*tup_y,2,0,0,29,30,21)
+          if tuple[2] != 1:
+            for j in range(1,tup_y):
+              pyxel.blt(x1+29*i,256-30*j,2,29,0,29,30,21)
+            
 
   #Animation
       if (animation == "run" and is_jumping == False):
@@ -231,7 +317,11 @@ def draw():
     
       pyxel.rect(scroll_x + 370, 0, 130, 25, 23)
       pyxel.text(scroll_x + 380, 5, title, 21)
-      pyxel.text(scroll_x + 380, 15, instruction, 21)
+      if questNumber == 2.4:
+        pyxel.text(scroll_x + 380, 15, instruction, 21)
+        pyxel.text(scroll_x + 480, 15, str(completion) + "/5", 21)
+      else:
+        pyxel.text(scroll_x + 380, 15, instruction, 21)
     elif dimension == "ethereum":
       pyxel.camera(scroll_x, 0)
       pyxel.cls(0)

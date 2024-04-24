@@ -1,179 +1,187 @@
-[{
-  "title": "Welcome to Ethereum",
-  "questNumber": 0,
-  "reward": "spell_DASH",
-  "deploy": [
+[
     {
-      "character": "Unknown Elder",
-      "instruction": "Go see the Unknown Elder",
-      "questNumber": 0.1,
-      "objective": "dialog",
-      "dialog": {
-        "Unknown Elder_t1": "Greetings, traveler. I see you're new to these lands.",
-        "Me_t1": "Where am I ? Who am I ?",
-        "Unknown Elder_t2": "Welcome to Ethereum ! Your journey starts here.",
-        "Me_T2": "Wait... What's Ethereum ?",
-        "Unknown Elder_T3": "Ethereum is the one of the three worlds. A long time ago, it was a land of peace and prosperity.",
-        "Me_T3": "And what happened ?",
-        "Unknown Elder_T4": "The Great Wizard Vitalik, creator of the dimension, once suddently disappeared. After this tragic event, \nmalicious people have taken control of the blockchain.",
-        "Me_T4": "Could you help me retablish the peace here ?",
-        "Unknown Elder_T5": "Well, you're in luck. I happen to know a thing or two about navigating these parts. Allow me to offer you some guidance.",
-        "Me_T5": "I'd appreciate any help you can provide. What do you suggest?",
-        "Unknown Elder_T6": "Have you heard of the Dash spell?",
-        "Me_T6": "Dash spell? No, I haven't. What does it do?",
-        "Unknown Elder_T7": "The Dash Spell allows you to slash your enemies with agility and velocity.",
-        "Me_T7": "That seems very cool to me. How can I obtain it ?",
-        "Unknown Elder_T8": "Well it's quite simple, just get me the Emerald Gem and I'll teach you the spell."
-      }
-    },
-    {
-      "character": "Degenerated Trader",
-      "instruction": "Go find the Emerald Gem",
-      "questNumber": 0.2,
-      "objective":"dialog",
-      "correct_index": 0,
-      "dialog": {
-        "Degenerated Trader_t1": "Hi young adventurer ! How may I help you ?",
-        "Me_t1": "I'm looking for the Emerald Gem, do you know where I could find it.",
-        "Degenerated Trader_t2": "If you give me 1 ETH, I'll tell you how to get it",
-        "Me_T2": [
-          {
-            "Me_t1": "[1] I'd rather kill myself than give a stranger 1 ETH",
-            "Degenerated Trader_t1": "You adopted the good attitude. Never trust anybody, keep your money safe. Here is the Emerald Gem."
-          },
-          {
-            "Me_t1": "[2] Of course I can give you 1 ETH ! Here it is"
-          },
-          {
-            "Me_t1": "[3] Sorry, I don't have 1 ETH"
-          }
+        "title": "Welcome to Ethereum",
+        "questNumber": 0,
+        "reward": "spell_DASH",
+        "deploy": [
+            {
+                "character": "Unknown Elder",
+                "instruction": "Go see the Unknown Elder",
+                "questNumber": 0.1,
+                "objective": "dialog",
+                "dialog": {
+                    "Unknown Elder_t1": "Greetings, traveler. I see you're new to these lands.",
+                    "Me_t1": "Where am I ? Who am I ?",
+                    "Unknown Elder_t2": "Welcome to Ethereum ! Your journey starts here.",
+                    "Me_T2": "Wait... What's Ethereum ?",
+                    "Unknown Elder_T3": "Ethereum is the one of the three worlds. A long time ago, it was a land of peace and prosperity.",
+                    "Me_T3": "And what happened ?",
+                    "Unknown Elder_T4": "The Great Wizard Vitalik, creator of the dimension, once suddently disappeared. After this tragic event, \nmalicious people have taken control of the blockchain.",
+                    "Me_T4": "Could you help me retablish the peace here ?",
+                    "Unknown Elder_T5": "Well, you're in luck. I happen to know a thing or two about navigating these parts. Allow me to offer you some guidance.",
+                    "Me_T5": "I'd appreciate any help you can provide. What do you suggest?",
+                    "Unknown Elder_T6": "Have you heard of the Dash spell?",
+                    "Me_T6": "Dash spell? No, I haven't. What does it do?",
+                    "Unknown Elder_T7": "The Dash Spell allows you to slash your enemies with agility and velocity.",
+                    "Me_T7": "That seems very cool to me. How can I obtain it ?",
+                    "Unknown Elder_T8": "Well it's quite simple, just get me the Emerald Gem and I'll teach you the spell."
+                }
+            },
+            {
+                "character": "Degenerated Trader",
+                "instruction": "Go find the Emerald Gem",
+                "questNumber": 0.2,
+                "objective": "dialog",
+                "correct_index": 0,
+                "dialog": {
+                    "Degenerated Trader_t1": "Hi young adventurer ! How may I help you ?",
+                    "Me_t1": "I'm looking for the Emerald Gem, do you know where I could find it.",
+                    "Degenerated Trader_t2": "If you give me 1 ETH, I'll tell you how to get it",
+                    "Me_T2": [
+                        {
+                            "Me_t1": "[1] I'd rather kill myself than give a stranger 1 ETH",
+                            "Degenerated Trader_t1": "You adopted the good attitude. Never trust anybody, keep your money safe. Here is the Emerald Gem."
+                        },
+                        {
+                            "Me_t1": "[2] Of course I can give you 1 ETH ! Here it is"
+                        },
+                        {
+                            "Me_t1": "[3] Sorry, I don't have 1 ETH"
+                        }
+                    ]
+                }
+            },
+            {
+                "character": "Unknown Elder",
+                "instruction": "Return the Emerald Gem",
+                "questNumber": 0.3,
+                "objective": "dialog",
+                "dialog": {
+                    "Unknown Elder_t1": "Greetings, traveler. You finally came back. Do you have what I asked to search for ?",
+                    "Me_t1": "Yes, I have it.",
+                    "Unknown Elder_t2": "Good ! Now, as I promised, I'll teach you the Dash spell. In order to use it, you'll have to press on [C]. \nCome on, try it !"
+                }
+            }
         ]
-      }
     },
     {
-      "character": "Unknown Elder",
-      "instruction": "Return the Emerald Gem",
-      "questNumber": 0.3,
-      "objective":"dialog",
-      "dialog": {
-        "Unknown Elder_t1": "Greetings, traveler. You finally came back. Do you have what I asked to search for ?",
-        "Me_t1": "Yes, I have it.",
-        "Unknown Elder_t2": "Good ! Now, as I promised, I'll teach you the Dash spell. In order to use it, you'll have to press on [C]. \nCome on, try it !"
-      }
+        "title": "Whispers of the blockchain",
+        "questNumber": 1,
+        "reward": "",
+        "deploy": [
+            {
+                "character": "Unknown Elder",
+                "instruction": "Talk to the Unknown Elder",
+                "questNumber": 1.1,
+                "objective": "dialog",
+                "dialog": {
+                    "Unknown Elder_t1": "Greetings, traveler. How can I help you ?",
+                    "Me_t1": "I'm begging you for help to restablish the peace.",
+                    "Unknown Elder_t2": "Unfortunately, with my age, I'm afraid I cannot help you.",
+                    "Me_T2": "But how am I supposed to find the Great Sorcerer ?",
+                    "Unknown Elder_T3": "I suggest you to go talk to the Original Block.",
+                    "Me_T3": "What is the Original Block ?",
+                    "Unknown Elder_T4": "It is the first block ever mined. It is now exposed as a memory of the Genesis.",
+                    "Me_T4": "And how would it be helpful to me ?",
+                    "Unknown Elder_T5": "Rumour has it when you are near enough to it, it speaks to you...",
+                    "Me_T5": "Thanks for your help, I'll go right here.",
+                    "Unknown Elder_T6": "Don't worry, I'll teleport you right there..."
+                }
+            },
+            {
+                "character": "Original Block",
+                "instruction": "Talk to the Original Block",
+                "questNumber": 1.2,
+                "objective": "dialog",
+                "dialog": {
+                    "_t1": "[You hear whispers which are louder every step you make]",
+                    "Original Block_t1": "Welcome, traveler of the Etherverse. You have come seeking the ancient wisdom I \nhave guarded since the dawn of time.",
+                    "Me_t1": "What message do you whisper, O Genesis Block? I have come to seek the truth buried within the depths \nof the blockchain.",
+                    "Original Block_t2": "The words I whisper are like echoes from the past, fragments of knowledge scattered across \nlines of code. But only one who can decipher my secrets can understand the true meaning of my words.",
+                    "Me_T2": "Tell me, O Genesis Block, how can I unravel your whispers and pierce the veil of mystery that surrounds them?",
+                    "Original Block_t3": "At the heart of my murmurs lies a key, a message that reveals a connection to the past and future of the Etherverse. \nBut this message is encoded in the arcane of cryptography, and only one who masters the arts of decryption can find it.",
+                    "Me_T3": "Show me the way, O Genesis Block. I will unravel the mysteries of your message and reveal the hidden wisdom within \nyour words.",
+                    "Original Block_t4": "May the light of the blockchain guide your path, traveler. The key you seek is buried within the symbols of \ncryptography. Find it, and you will unlock the doors of knowledge.",
+                    "System_t1": "The Encrypted Message is : L DZDLW WKH DGXFDUHU WR ILQG QHZ FKDQJHOHV DQG KLQGHQ WUHVWHV"
+                }
+            },
+            {
+                "character": "Original Block",
+                "instruction": "Give the unciphered message",
+                "questNumber": 1.3,
+                "objective": "dialog",
+                "dialog": {
+                    "Original Block_t1": "Greetings, traveller. Have you deciphered the message ?",
+                    "Me_t1": "",
+                    "Original Block_t2": {
+                        "true": "It is the right answer. You can now go back into the Ethereum dimension",
+                        "false": "Try again..."
+                    }
+                }
+            },
+            {
+                "character": "Unknown Elder",
+                "instruction": "Talk to the Unknown Elder",
+                "questNumber": 1.4,
+                "objective": "dialog",
+                "dialog": {
+                    "Unknown Elder_t1": "Greetings, traveler. How was your meeting ?",
+                    "Me_t1": "I am now aware of Vitalik's vision. I have to free this world, and I have to defeat him...",
+                    "Unknown Elder_t2": "You're not ready yet, you'll have to train a lot. But I think you are the only one that can defeat him.",
+                    "Me_T2": "How do you know this ?",
+                    "Unknown Elder_T3": "(laughs) Don't worry young traveler, it's just an intuition... Don't believe an old and crazy man who already has a \nfoot in his grave."
+                }
+            }
+        ]
+    },
+    {
+        "title": "The Lost Miners",
+        "questNumber": 2,
+        "reward": "spell_FIREBALL",
+        "deploy": [
+            {
+                "character": "Unknown Elder",
+                "instruction": "Talk to the Unknown Elder",
+                "questNumber": 2.1,
+                "objective": "dialog",
+                "dialog": {
+                    "Unknown Elder_t1": "Greetings, traveler. I now have a mission for you.",
+                    "Me_t1": "Oh really ?! And what would I get in exchange ?",
+                    "Unknown Elder_t2": "In exchange, I'll teach you the Fireball spell, which could be very useful for you in your quest !",
+                    "Me_T2": "That's okay, I accept then...",
+                    "Unknown Elder_T3": "Two days ago, a group of miners disappeared in the Ethereum Mines. You have to find them in order to achieve the quest.",
+                    "Me_T3": "And how do I go in the mine ?",
+                    "Unknown Elder_T4": "Just jump in one of the portals of the city, you'll be teleported instantly in the mine."
+                }
+            },
+            {
+                "character": "",
+                "instruction": "Enter in the mine",
+                "questNumber": 2.2,
+                "objective": "interact"
+            },
+            {
+                "character": "Chief Miner",
+                "instruction": "Talk to Chief Miner",
+                "questNumber": 2.3,
+                "objective": "dialog",
+                "dialog": {
+                    "Chief Miner_t1": "Greetings, traveler. How can I help you ?",
+                    "Me_t1": "I'm searching for a group of miners who disappeared not so long ago",
+                    "Chief Miner_t2": "You're the adventurer sent by the Unknown Elder ! I first have a mission for you....",
+                    "Me_T2": "What is it ? And why ?",
+                    "Chief Miner_t3": "You'll have to mine 5 Ethereums and then give it to me. That's how it works if you want to navigate in the mine",
+                    "Me_T3": "(sights) Okay then, I accept."
+                }
+            },
+            {
+                "character": "",
+                "instruction": "Mine 5 Ethereums",
+                "questNumber": 2.4,
+                "objective": "mine",
+                "miningObj": 5,
+                "completion": 0
+            }
+        ]
     }
-  ]
-},
-{
-  "title": "Whispers of the blockchain",
-  "questNumber": 1,
-  "reward": "",
-  "deploy": [
-    {
-      "character": "Unknown Elder",
-      "instruction": "Talk to the Unknown Elder",
-      "questNumber": 1.1,
-      "objective": "dialog",
-      "dialog": {
-        "Unknown Elder_t1": "Greetings, traveler. How can I help you ?",
-        "Me_t1": "I'm begging you for help to restablish the peace.",
-        "Unknown Elder_t2": "Unfortunately, with my age, I'm afraid I cannot help you.",
-        "Me_T2": "But how am I supposed to find the Great Sorcerer ?",
-        "Unknown Elder_T3": "I suggest you to go talk to the Original Block.",
-        "Me_T3": "What is the Original Block ?",
-        "Unknown Elder_T4": "It is the first block ever mined. It is now exposed as a memory of the Genesis.",
-        "Me_T4": "And how would it be helpful to me ?",
-        "Unknown Elder_T5": "Rumour has it when you are near enough to it, it speaks to you...",
-        "Me_T5": "Thanks for your help, I'll go right here.",
-        "Unknown Elder_T6": "Don't worry, I'll teleport you right there..."
-      }
-    },
-    {
-      "character": "Original Block",
-      "instruction": "Talk to the Original Block",
-      "questNumber": 1.2,
-      "objective": "dialog",
-      "dialog": {
-        "_t1": "[You hear whispers which are louder every step you make]",
-        "Original Block_t1": "Welcome, traveler of the Etherverse. You have come seeking the ancient wisdom I \nhave guarded since the dawn of time.",
-        "Me_t1": "What message do you whisper, O Genesis Block? I have come to seek the truth buried within the depths \nof the blockchain.",
-        "Original Block_t2": "The words I whisper are like echoes from the past, fragments of knowledge scattered across \nlines of code. But only one who can decipher my secrets can understand the true meaning of my words.",
-        "Me_T2": "Tell me, O Genesis Block, how can I unravel your whispers and pierce the veil of mystery that surrounds them?",
-        "Original Block_t3": "At the heart of my murmurs lies a key, a message that reveals a connection to the past and future of the Etherverse. \nBut this message is encoded in the arcane of cryptography, and only one who masters the arts of decryption can find it.",
-        "Me_T3": "Show me the way, O Genesis Block. I will unravel the mysteries of your message and reveal the hidden wisdom within \nyour words.",
-        "Original Block_t4": "May the light of the blockchain guide your path, traveler. The key you seek is buried within the symbols of \ncryptography. Find it, and you will unlock the doors of knowledge.",
-        "System_t1": "The Encrypted Message is : L DZDLW WKH DGXFDUHU WR ILQG QHZ FKDQJHOHV DQG KLQGHQ WUHVWHV"
-      }
-    },
-    {
-      "character": "Original Block",
-      "instruction": "Give the unciphered message",
-      "questNumber": 1.3,
-      "objective": "dialog",
-      "dialog": {
-        "Original Block_t1": "Greetings, traveller. Have you deciphered the message ?",
-        "Me_t1": "",
-        "Original Block_t2": {
-          "true": "It is the right answer. You can now go back into the Ethereum dimension",
-          "false": "Try again..."
-        }
-      }     
-    },
-    {
-      "character": "Unknown Elder",
-      "instruction": "Talk to the Unknown Elder",
-      "questNumber": 1.4,
-      "objective": "dialog",
-      "dialog": {
-        "Unknown Elder_t1": "Greetings, traveler. How was your meeting ?",
-        "Me_t1": "I am now aware of Vitalik's vision. I have to free this world, and I have to defeat him...",
-        "Unknown Elder_t2": "You're not ready yet, you'll have to train a lot. But I think you are the only one that can defeat him.",
-        "Me_T2": "How do you know this ?",
-        "Unknown Elder_T3": "(laughs) Don't worry young traveler, it's just an intuition... Don't believe an old and crazy man who already has a \nfoot in his grave."
-      }
-    }
-  ]
-},
-{
-  "title": "The Lost Miners",
-  "questNumber": 2,
-  "reward": "spell_FIREBALL",
-  "deploy": [
-    {
-      "character": "Unknown Elder",
-      "instruction": "Talk to the Unknown Elder",
-      "questNumber": 2.1,
-      "objective": "dialog",
-      "dialog": {
-        "Unknown Elder_t1": "Greetings, traveler. I now have a mission for you.",
-        "Me_t1": "Oh really ?! And what would I get in exchange ?",
-        "Unknown Elder_t2": "In exchange, I'll teach you the Fireball spell, which could be very useful for you in your quest !",
-        "Me_T2": "That's okay, I accept then...",
-        "Unknown Elder_T3": "Two days ago, a group of miners disappeared in the Ethereum Mines. You have to find them in order to achieve the quest.",
-        "Me_T3": "And how do I go in the mine ?",
-        "Unknown Elder_T4": "Just jump in one of the portals of the city, you'll be teleported instantly in the mine."
-      }
-    },
-    {
-      "character": "Portal",
-      "instruction": "Enter in the mine",
-      "questNumber": 2.2,
-      "objective": "interact"
-    },
-    {
-      "character": "Rich Miner",
-      "instruction": "Talk to the Rich Miner",
-      "questNumber": 2.3,
-      "objective": "dialog",
-      "dialog": {
-        "Unknown Elder_t1": "Greetings, traveler. I now have a mission for you.",
-        "Me_t1": "Oh really ?! And what would I get in exchange ?",
-        "Unknown Elder_t2": "In exchange, I'll teach you the Fireball spell, which could be very useful for you in your quest !",
-        "Me_T2": "That's okay, I accept then...",
-        "Unknown Elder_T3": "Two days ago, a group of miners disappeared in the Ethereum Mines. You have to find them in order to achieve the quest.",
-        "Me_T3": "And how do I go in the mine ?",
-        "Unknown Elder_T4": "Just jump in one of the portals of the city, you'll be teleported instantly in the mine."
-      }
-    }
-  ]
-}
 ]

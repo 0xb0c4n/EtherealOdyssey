@@ -1,13 +1,13 @@
 [
     {
-      "name": "Rich Miner",
+      "name": "Chief Miner",
       "questGiver": true,
       "interactable": true,
       "image_bank": 2,
       "location_x": 0,
-      "location_y": 0,
-      "size_x": 36,
-      "size_y": 191,
+      "location_y": 32,
+      "size_x": 28,
+      "size_y": 39,
       "position_x": 400,
       "position_y": 159
     }
