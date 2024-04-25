@@ -1,11 +1,12 @@
 import pyxel
 from deplacement import deplacement_x
 from quests import interact, launch_quest
-from get_jsondata import get_quests, get_player, get_spells, get_pnj
+from get_jsondata import get_quests, get_player, get_spells, get_pnj, get_monster
 from write import changeJson
 from spawn import spawn_ressources
-from monster import follow
-import time
+from monster import follow, has_been_hit_gb
+from life_gestion import player_damage, passive_regen
+import math
 
 run_sprite = [(48, 0, 38, 58), (88, 0, 29, 56), (120, 0, 32, 56),
               (152, 0, 33, 50), (192, 0, 43, 51), (0, 64, 31, 51)]
@@ -61,9 +62,10 @@ completion = 0
 
 great_boss_attack = False
 great_boss_x = 1500
-dir_monster = 1
 
 health = 100
+health_gb = 150
+is_attack = False
 
 ressources_mine = spawn_ressources(0,2900,platform_mine)
 
@@ -73,10 +75,32 @@ def get_ground_height(x):
       return tuple[2]
 
 def update():
-  global perso_x, block_left, deploy, dir_monster, secondQuestNumber, completion, questNumber, velocity_y, block_right, subcharacter, input_text, animation, direction, dimension, y, scroll_x, is_jumping, is_inside, character_name, index, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i, characters_quest, objective
+  global perso_x, block_left, is_attack, deploy, health, health_gb, secondQuestNumber, completion, questNumber, velocity_y, block_right, subcharacter, input_text, animation, direction, dimension, y, scroll_x, is_jumping, is_inside, character_name, index, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i, characters_quest, objective
 
-  perso_x, animation, direction = deplacement_x(perso_x, 1, direction, block_left, block_right)
+  if(great_boss_attack):
+    if perso_x == scroll_x:
+      block_left = True
+      block_right = False
+    elif perso_x+28 >= great_boss_x:
+      block_right = True
+      block_left = False
+    perso_x, animation, direction = deplacement_x(perso_x, 1, direction, block_left, block_right)
+  else:
+    perso_x, animation, direction = deplacement_x(perso_x, 1, direction, block_left, block_right)
+    if perso_x > scroll_x + SCROLL_BORDER_X and direction == 1:
+      scroll_x += 3
+    elif perso_x < SCROLL_BORDER_X:
+      scroll_x = 0
+    elif direction == -1 and animation == "run":
+      scroll_x -= 3
 
+  print(is_attack)
+  player_hit = has_been_hit_gb(is_jumping, is_attack)
+  for elt in get_monster():
+    if elt["name"] == "Great Boss":
+      if player_hit:
+        health = player_damage(health, elt["damage"])
+  
   quest_list = get_quests()
   dimension = get_player()["dimension"]
 
@@ -148,13 +172,6 @@ def update():
 
   pyxel.images[2].load(0,0,"assets/" + dimension + "_assets.png")
   pyxel.images[1].load(0,0,"assets/"+ dimension + ".png")
-
-  if perso_x > scroll_x + SCROLL_BORDER_X and direction == 1:
-    scroll_x += 3
-  elif perso_x < SCROLL_BORDER_X:
-    scroll_x = 0
-  elif direction == -1 and animation == "run":
-    scroll_x -= 3
 
   for elt in pnj_list:
     if elt["interactable"] == True:
@@ -254,7 +271,7 @@ def update():
       game_launched = True
 
 def draw():
-  global input_text, great_boss_attack, great_boss_x, dir_monster
+  global input_text, great_boss_attack, great_boss_x, is_attack
   if game_launched == False:
     pyxel.text(100, 10, "Ethereal Odyssey", 12)
     pyxel.text(40,100,"Press [E] to play (full screen highly recommended)", 12)
@@ -282,7 +299,6 @@ def draw():
               changeJson("2/deploy/3/completion", completion+1, "data/quests.json")
               ressources_mine.remove(elt)
       elif questNumber == 2.6:
-        great_boss_x, dir_monster = follow(perso_x, great_boss_x, dir_monster)
         if great_boss_attack == False:
           pyxel.blt(1500, 130, 2, great_boss_sprite[0][0], great_boss_sprite[0][1],
               great_boss_sprite[0][2]*-1, great_boss_sprite[0][3], 21)
@@ -292,13 +308,26 @@ def draw():
             if(pyxel.btnp(pyxel.KEY_E)):
               great_boss_attack = True
         else:
-          coef = pyxel.frame_count // 4 % 4
-          if(great_boss_sprite[coef][2] > 49):
-            pyxel.blt(great_boss_x-(great_boss_sprite[coef][2]-50)*-(dir_monster), 130, 2, great_boss_sprite[coef][0], great_boss_sprite[coef][1],
-              great_boss_sprite[coef][2]*dir_monster, great_boss_sprite[coef][3], 21)
+          great_boss_x = follow(perso_x, great_boss_x)
+          if(pyxel.frame_count // 40) % 3 == 0:
+            coef = pyxel.frame_count // 4 % 4
+            length_laser = math.ceil((great_boss_x - scroll_x) / 149)
+            great_boss_x_solve = great_boss_x-(great_boss_sprite[coef][2]-50)
+            if(great_boss_sprite[coef][2] > 49):
+              pyxel.blt(great_boss_x_solve, 130, 2, great_boss_sprite[coef][0], great_boss_sprite[coef][1],
+                great_boss_sprite[coef][2]*-1, great_boss_sprite[coef][3], 21)
+              if coef == 2:
+                for i in range(length_laser):
+                  pyxel.blt(great_boss_x_solve-90*i,178,2,155,126,100,6,21)
+                  is_attack = True
+              else:
+                is_attack = False
+            else:
+              pyxel.blt(great_boss_x_solve, 130, 2, great_boss_sprite[coef][0], great_boss_sprite[coef][1],
+                great_boss_sprite[coef][2]*-1, great_boss_sprite[coef][3], 21)
           else:
-            pyxel.blt(great_boss_x, 130, 2, great_boss_sprite[coef][0], great_boss_sprite[coef][1],
-              (great_boss_sprite[coef][2]*dir_monster), great_boss_sprite[coef][3], 21)
+            pyxel.blt(great_boss_x, 130, 2, great_boss_sprite[0][0], great_boss_sprite[0][1],
+              great_boss_sprite[0][2]*-1, great_boss_sprite[0][3], 21)
 
       for tuple in platform_mine:
         x1 = tuple[0]

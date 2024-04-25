@@ -1,11 +1,12 @@
-def follow(perso_x, monster_x, dir_monster):
-    if(perso_x + 140 < monster_x):
-        monster_x -= 3
-        dir_monster = -1
-    elif(perso_x - 140 > monster_x):
-        monster_x += 3
-        dir_monster = 1
+def follow(perso_x, monster_x):
+    if(perso_x + 200 < monster_x):
+        monster_x -= 2
     else:
         monster_x = monster_x
-        dir_monster = dir_monster
-    return monster_x, dir_monster
+    return monster_x
+
+def has_been_hit_gb(is_jumping, is_attack):
+    if(is_jumping == False and is_attack):
+        return True
+    else:
+        return False

@@ -27,3 +27,10 @@ def get_pnj(dimension):
   f = open("data/" + dimension + "_pnj.json")
   obj = json.load(f)
   return obj
+
+def get_monster():
+  """Prend aucun paramètre en compte
+  Renvoie l'intégralité du tableau des infos des monstres"""
+  f = open("data/monsters.json")
+  obj = json.load(f)
+  return obj
