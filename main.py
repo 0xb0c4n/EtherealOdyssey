@@ -4,6 +4,7 @@ from quests import interact, launch_quest
 from get_jsondata import get_quests, get_player, get_spells, get_pnj
 from write import changeJson
 from spawn import spawn_ressources
+from monster import follow
 import time
 
 run_sprite = [(48, 0, 38, 58), (88, 0, 29, 56), (120, 0, 32, 56),
@@ -18,14 +19,14 @@ pal = [0x1b2954,0x8c938c,0x5a3936,0x28222c,0x4c505b,0x73522d,
        0x83604f,0x3c4c54,0xc49892,0x3c445c,0x6c6e6c,0x7c706a,
        0x6c6468,0xf3b340,0xe68d02,0xffb228,0xAF082D,0x83213C,
        0xF35C5C,0x2D2E4D,0x316595,0xffffff,0x3fb34e,0x000000,
-       0x171724,0x3d232a,0x232b5c,0xfedba7]
+       0x171724,0x3d232a,0x232b5c,0xfedba7,0xfc030f]
 
 platform_mine = [(0, 232, 1), (232, 261, 2), (261, 290, 3), (290, 319, 4), (319, 348, 3), 
                  (348, 609, 2), (609, 638, 1), (638, 667, 2), (667, 696, 3), 
                  (696, 725, 4), (725, 754, 3), (754, 783, 2), (783, 812, 1), (812, 841, 2), (841, 870, 3), 
                  (870, 899, 3), (899, 928, 3), (928, 957, 3), (957, 986, 3), (986, 2900, 2)]
 
-pyxel.init(500, 250, "Ethereal Odyssey", display_scale=2)
+pyxel.init(500, 250, "Ethereal Odyssey", display_scale=2, fps=40)
 pyxel.load("ressources.pyxres")
 pyxel.colors.from_list(pal)
 
@@ -59,6 +60,10 @@ block_right = False
 completion = 0
 
 great_boss_attack = False
+great_boss_x = 1500
+dir_monster = 1
+
+health = 100
 
 ressources_mine = spawn_ressources(0,2900,platform_mine)
 
@@ -68,7 +73,7 @@ def get_ground_height(x):
       return tuple[2]
 
 def update():
-  global perso_x, block_left, deploy, secondQuestNumber, completion, questNumber, velocity_y, block_right, subcharacter, input_text, animation, direction, dimension, y, scroll_x, is_jumping, is_inside, character_name, index, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i, characters_quest, objective
+  global perso_x, block_left, deploy, dir_monster, secondQuestNumber, completion, questNumber, velocity_y, block_right, subcharacter, input_text, animation, direction, dimension, y, scroll_x, is_jumping, is_inside, character_name, index, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i, characters_quest, objective
 
   perso_x, animation, direction = deplacement_x(perso_x, 1, direction, block_left, block_right)
 
@@ -249,7 +254,7 @@ def update():
       game_launched = True
 
 def draw():
-  global input_text, great_boss_attack
+  global input_text, great_boss_attack, great_boss_x, dir_monster
   if game_launched == False:
     pyxel.text(100, 10, "Ethereal Odyssey", 12)
     pyxel.text(40,100,"Press [E] to play (full screen highly recommended)", 12)
@@ -277,7 +282,7 @@ def draw():
               changeJson("2/deploy/3/completion", completion+1, "data/quests.json")
               ressources_mine.remove(elt)
       elif questNumber == 2.6:
-        coef = pyxel.frame_count // 4 % 4
+        great_boss_x, dir_monster = follow(perso_x, great_boss_x, dir_monster)
         if great_boss_attack == False:
           pyxel.blt(1500, 130, 2, great_boss_sprite[0][0], great_boss_sprite[0][1],
               great_boss_sprite[0][2]*-1, great_boss_sprite[0][3], 21)
@@ -287,9 +292,14 @@ def draw():
             if(pyxel.btnp(pyxel.KEY_E)):
               great_boss_attack = True
         else:
-          pyxel.blt(1500, 130, 2, great_boss_sprite[coef][0], great_boss_sprite[coef][1],
-              great_boss_sprite[coef][2]*-1, great_boss_sprite[coef][3], 21)
-      print("hello world") 
+          coef = pyxel.frame_count // 4 % 4
+          if(great_boss_sprite[coef][2] > 49):
+            pyxel.blt(great_boss_x-(great_boss_sprite[coef][2]-50)*-(dir_monster), 130, 2, great_boss_sprite[coef][0], great_boss_sprite[coef][1],
+              great_boss_sprite[coef][2]*dir_monster, great_boss_sprite[coef][3], 21)
+          else:
+            pyxel.blt(great_boss_x, 130, 2, great_boss_sprite[coef][0], great_boss_sprite[coef][1],
+              (great_boss_sprite[coef][2]*dir_monster), great_boss_sprite[coef][3], 21)
+
       for tuple in platform_mine:
         x1 = tuple[0]
         x2 = tuple[1]
@@ -337,6 +347,10 @@ def draw():
         pyxel.text(scroll_x + 480, 15, str(completion) + "/5", 21)
       else:
         pyxel.text(scroll_x + 380, 15, instruction, 21)
+      
+      pyxel.blt(scroll_x,0,0,40,64,24,24,0)
+      pyxel.rect(scroll_x+24, 3, 101, 14, 23)
+      pyxel.rect(scroll_x+24, 4, 1*health, 12, 28)
     elif dimension == "ethereum":
       pyxel.camera(scroll_x, 0)
       pyxel.cls(0)
