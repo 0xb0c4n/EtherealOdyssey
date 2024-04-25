@@ -239,6 +239,7 @@ def update():
   if pyxel.btnr(pyxel.KEY_Z):
     animation = "fireball"
 
+
   if(game_launched == False):
     if(pyxel.btnr(pyxel.KEY_E)):
       game_launched = True
