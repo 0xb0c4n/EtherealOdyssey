@@ -288,7 +288,7 @@ def draw():
         else:
           pyxel.blt(1500, 130, 2, great_boss_sprite[coef][0], great_boss_sprite[coef][1],
               great_boss_sprite[coef][2]*-1, great_boss_sprite[coef][3], 21)
-
+      print("hello world") 
       for tuple in platform_mine:
         x1 = tuple[0]
         x2 = tuple[1]
