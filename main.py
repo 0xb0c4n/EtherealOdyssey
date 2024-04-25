@@ -4,6 +4,7 @@ from quests import interact, launch_quest
 from get_jsondata import get_quests, get_player, get_spells, get_pnj
 from write import changeJson
 from spawn import spawn_ressources
+import time
 
 run_sprite = [(48, 0, 38, 58), (88, 0, 29, 56), (120, 0, 32, 56),
               (152, 0, 33, 50), (192, 0, 43, 51), (0, 64, 31, 51)]
@@ -11,6 +12,7 @@ jump_sprite = [(0, 120, 28, 53), (32, 120, 36, 56), (72, 120, 31, 50),
                (104, 120, 32, 60), (136, 120, 38, 53), (176, 120, 25, 46)]
 fireball_sprite = [(0, 184, 32, 56), (32, 184, 39, 56), (72, 184, 48, 53),
                    (120, 184, 50, 53)]
+great_boss_sprite = [(0,80,48,62),(54,80,49,61),(107,80,149,63), (0,142,96,59)]
 
 pal = [0x1b2954,0x8c938c,0x5a3936,0x28222c,0x4c505b,0x73522d,
        0x83604f,0x3c4c54,0xc49892,0x3c445c,0x6c6e6c,0x7c706a,
@@ -55,6 +57,8 @@ block_left = False
 block_right = False
 
 completion = 0
+
+great_boss_attack = False
 
 ressources_mine = spawn_ressources(0,2900,platform_mine)
 
@@ -125,13 +129,13 @@ def update():
   velocity_y = min(velocity_y, 5)
   if dimension == "mine":
     if direction == 1:
-      if y >= 256-get_ground_height(perso_x+25)*30-58: 
+      if y >= 256-get_ground_height(perso_x+25)*29-58: 
           is_jumping = False
-          y = 256-get_ground_height(perso_x+25)*30-58
+          y = 256-get_ground_height(perso_x+25)*29-58
     elif direction == -1:
-      if y >= 256-get_ground_height(perso_x)*30-58: 
+      if y >= 256-get_ground_height(perso_x)*29-58: 
             is_jumping = False
-            y = 256-get_ground_height(perso_x)*30-58
+            y = 256-get_ground_height(perso_x)*29-58
   else:
     if y >= 169:
       is_jumping = False
@@ -244,7 +248,7 @@ def update():
       game_launched = True
 
 def draw():
-  global input_text
+  global input_text, great_boss_attack
   if game_launched == False:
     pyxel.text(100, 10, "Ethereal Odyssey", 12)
     pyxel.text(40,100,"Press [E] to play (full screen highly recommended)", 12)
@@ -255,9 +259,6 @@ def draw():
       for i in range(20):
         pyxel.blt(256*i, 0, 1, 0,0,256,256)
 
-      for elt in ressources_mine:
-        pyxel.blt(elt[0], elt[1], 2, 58, 0, 33,29,21)
-
       for elt in pnj_list:
         if(type(elt["location_x"]) != list):
           pyxel.blt(elt["position_x"], elt["position_y"], elt["image_bank"], elt["location_x"], elt["location_y"], elt["size_x"], elt["size_y"], 21)
@@ -265,15 +266,28 @@ def draw():
           if (elt["interactable"] == True and is_inside[elt["name"]] == True and elt["name"] == characters_quest):
             pyxel.text(elt["position_x"]-20, 140, "Press [E] to interact", 21)
         
-      if questNumber == 2.4:
+      if questNumber == 2.4 and get_quests()[2]["deploy"][3]["completion"] != 5:
         for elt in ressources_mine:
+          pyxel.blt(elt[0], elt[1], 2, 58, 0, 33,29,21)
           is_inside_mine = interact(perso_x, elt[0])
           if(is_inside_mine):
             pyxel.text(elt[0], 140, "[E] Mine", 21)
             if(pyxel.btnp(pyxel.KEY_E)):
               changeJson("2/deploy/3/completion", completion+1, "data/quests.json")
               ressources_mine.remove(elt)
-
+      elif questNumber == 2.6:
+        coef = pyxel.frame_count // 4 % 4
+        if great_boss_attack == False:
+          pyxel.blt(1500, 130, 2, great_boss_sprite[0][0], great_boss_sprite[0][1],
+              great_boss_sprite[0][2]*-1, great_boss_sprite[0][3], 21)
+          is_inside_gb = interact(perso_x, 1450)
+          if(is_inside_gb):
+            pyxel.text(1500, 100, "[E] Attack", 21)
+            if(pyxel.btnp(pyxel.KEY_E)):
+              great_boss_attack = True
+        else:
+          pyxel.blt(1500, 130, 2, great_boss_sprite[coef][0], great_boss_sprite[coef][1],
+              great_boss_sprite[coef][2]*-1, great_boss_sprite[coef][3], 21)
 
       for tuple in platform_mine:
         x1 = tuple[0]
@@ -281,10 +295,10 @@ def draw():
         tup_y = tuple[2]
         coef_ind = (x2-x1) // 29
         for i in range(coef_ind):
-          pyxel.blt(x1+29*i,256-30*tup_y,2,0,0,29,30,21)
+          pyxel.blt(x1+29*i,256-29*tup_y,2,0,0,29,29,21)
           if tuple[2] != 1:
             for j in range(1,tup_y):
-              pyxel.blt(x1+29*i,256-30*j,2,29,0,29,30,21)
+              pyxel.blt(x1+29*i,256-29*j,2,29,0,29,29,21)
             
 
   #Animation

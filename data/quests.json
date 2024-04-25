@@ -180,7 +180,27 @@
                 "questNumber": 2.4,
                 "objective": "mine",
                 "miningObj": 5,
-                "completion": 0
+                "completion": 5
+            },
+            {
+                "character": "Chief Miner",
+                "instruction": "Talk to Chief Miner",
+                "questNumber": 2.5,
+                "objective": "dialog",
+                "dialog": {
+                    "Chief Miner_t1": "Greetings, traveler. Do you have the 5 Ethereums",
+                    "Me_t1": "Yes, here it is...",
+                    "Chief Miner_t2": "Now I'm going to give you all the information you need. The miners disappeared in a very dangerous zone, that belongs to the Great Boss.",
+                    "Me_T2": "Who's the Great Boss ?",
+                    "Chief Miner_t3": "It's the monster of the mine that has terrified workers for years...",
+                    "Me_T3": "Thanks for your help ! I'm going to beat him."
+                }
+            },
+            {
+                "character": "",
+                "instruction": "Kill the Great Boss",
+                "questNumber": 2.6,
+                "objective": "kill"
             }
         ]
     }
