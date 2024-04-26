@@ -111,7 +111,7 @@
                 "questNumber": 1.3,
                 "objective": "dialog",
                 "dialog": {
-                    "Original Block_t1": "Greetings, traveller. Have you deciphered the message ?",
+                    "Original Block_t1": "Greetings, traveler. Have you deciphered the message ?",
                     "Me_t1": "",
                     "Original Block_t2": {
                         "true": "It is the right answer. You can now go back into the Ethereum dimension",
@@ -180,7 +180,7 @@
                 "questNumber": 2.4,
                 "objective": "mine",
                 "miningObj": 5,
-                "completion": 5
+                "completion": 0
             },
             {
                 "character": "Chief Miner",
@@ -188,9 +188,9 @@
                 "questNumber": 2.5,
                 "objective": "dialog",
                 "dialog": {
-                    "Chief Miner_t1": "Greetings, traveler. Do you have the 5 Ethereums",
+                    "Chief Miner_t1": "Greetings, traveler. Do you have the 5 Ethereums ?",
                     "Me_t1": "Yes, here it is...",
-                    "Chief Miner_t2": "Now I'm going to give you all the information you need. The miners disappeared in a very dangerous zone, that belongs to the Great Boss.",
+                    "Chief Miner_t2": "Now I'm going to give you all the information you need. The miners disappeared in a very dangerous \nzone, that belongs to the Great Boss.",
                     "Me_T2": "Who's the Great Boss ?",
                     "Chief Miner_t3": "It's the monster of the mine that has terrified workers for years...",
                     "Me_T3": "Thanks for your help ! I'm going to beat him."
@@ -201,6 +201,86 @@
                 "instruction": "Kill the Great Boss",
                 "questNumber": 2.6,
                 "objective": "kill"
+            },
+            {
+                "character": "Spike",
+                "instruction": "Go talk to the lost miners",
+                "questNumber": 2.7,
+                "objective": "dialog",
+                "dialog": {
+                    "Spike_T1": "You're the one that saved me ? You have beaten the Great Boss ?",
+                    "Me_t1": "Indeed, I am the one. Are you in the group of miners that disappeared ?",
+                    "Spike_t2": "Yes, but I'm the only survivor. The others died, killed by the Great Boss. I wanted to do something, \n but without my gun, I couldn't do anything...",
+                    "Me_t2": "Let's not focus on this for the moment. Now just follow me to Chief Miner"
+                }
+            },
+            {
+                "character":"Chief Miner",
+                "instruction": "Go to Chief Miner with Spike",
+                "questNumber": 2.8,
+                "objective": "dialog",
+                "dialog": {
+                    "Chief Miner_t1": "Greetings, traveler. As I see, you managed to beat the Great Boss",
+                    "Me_t1": "Indeed Chief, and I bring you someone.",
+                    "Chief Miner_t2": "Only one ? Spike ! Where are the others ?",
+                    "Spike_T1": "(smoking) They all died of dehydration. I'm the only survivor...",
+                    "Chief Miner_t3": "Thanks for your help, dear traveler. That's a big loss for us, but we'll be able to get up.",
+                    "Me_T2": "You're welcome, do not hesitate if you have any other problem.",
+                    "Spike_t2": "See you space, cowboy..."
+                }
+            },
+            {
+                "character": "Unknown Elder",
+                "instruction": "Talk to the Unknown Elder",
+                "questNumber": 2.9,
+                "objective": "dialog",
+                "dialog": {
+                    "Unknown Elder_t1": "Greetings, traveler. Did you accomplish your mission with success ?",
+                    "Me_t1": "Yes. Now respect your promise and teach me the spell.",
+                    "Unknown Elder_t2": "Yes I'll do it. The Fireball spell is a magic spell, which allows you to attack by distance your ennemies.",
+                    "Me_T2": "And how do I invoke it ?",
+                    "Unknown Elder_T3": "Just press [X] and the fireball will launch itself. \nBut be careful, you also have to use the Dash Spell"
+                }
+            }
+        ]
+    },
+    {
+        "title": "The end... or the beginning ?",
+        "questNumber": 3,
+        "reward": "",
+        "deploy": [
+            {
+                "character": "Unknown Elder",
+                "instruction": "Talk to the Unknown Elder",
+                "questNumber": 3.1,
+                "objective": "dialog",
+                "dialog": {
+                    "Unknown Elder_t1": "Greetings, traveler. I think you are now ready for the last fight !",
+                    "Me_t1": "I don't really think I am. It may be dangerous...",
+                    "Unknown Elder_t2": "Believe me, you are.",
+                    "Me_T2": "But how am I supposed to find the Great Sorcerer ?",
+                    "Unknown Elder_T3": "You first have to go talk to the Original Block. He's the only one that can teleport you \nto the Great Sorcerer. I'm going to send you there"
+                }
+            },
+            {
+                "character": "Original Block",
+                "instruction": "Talk to the Original Block",
+                "questNumber": 3.2,
+                "objective": "dialog",
+                "correct_index": 1,
+                "dialog": {
+                    "Original Block_t1": "Greetings, traveler. How can I help you ?",
+                    "Me_t1": "I'd like to be teleported to the Great Sorcerer",
+                    "Original Block_t2": "Dear traveler, the fight against him is very hard. You have to be confident to beat him. Are you sure you want to ",
+                    "Me_T2": [
+                        {
+                            "Me_t1": "[1] Accept"
+                        },
+                        {
+                            "Me_t1": "[2] Decline"
+                        }
+                    ]
+                }
             }
         ]
     }

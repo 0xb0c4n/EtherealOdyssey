@@ -10,5 +10,17 @@
       "size_y": 39,
       "position_x": 400,
       "position_y": 159
+    },
+    {
+      "name": "Spike",
+      "questGiver": false,
+      "interactable": true,
+      "image_bank": 2,
+      "location_x":225,
+      "location_y": 0,
+      "size_x": 31,
+      "size_y": 55,
+      "position_x": 1800,
+      "position_y": 149
     }
   ]

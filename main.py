@@ -5,7 +5,7 @@ from get_jsondata import get_quests, get_player, get_spells, get_pnj, get_monste
 from write import changeJson
 from spawn import spawn_ressources
 from monster import follow, has_been_hit_gb
-from life_gestion import player_damage, passive_regen
+from life_gestion import player_damage, passive_regen, check_health
 import math
 
 run_sprite = [(48, 0, 38, 58), (88, 0, 29, 56), (120, 0, 32, 56),
@@ -41,6 +41,7 @@ SCROLL_BORDER_X = 125
 animation = "idle"
 
 is_jumping = False
+is_fireball = False
 
 is_inside = {}
 launch = False
@@ -69,13 +70,15 @@ is_attack = False
 
 ressources_mine = spawn_ressources(0,2900,platform_mine)
 
+game_over = False
+
 def get_ground_height(x):
   for tuple in platform_mine:
     if tuple[0] <= x < tuple[1]:
       return tuple[2]
 
 def update():
-  global perso_x, block_left, is_attack, deploy, health, health_gb, secondQuestNumber, completion, questNumber, velocity_y, block_right, subcharacter, input_text, animation, direction, dimension, y, scroll_x, is_jumping, is_inside, character_name, index, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i, characters_quest, objective
+  global perso_x, block_left, is_attack, great_boss_attack, game_over, deploy, health, health_gb, secondQuestNumber, completion, questNumber, velocity_y, block_right, subcharacter, input_text, animation, direction, dimension, y, scroll_x, is_jumping, is_inside, character_name, index, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i, characters_quest, objective
 
   if(great_boss_attack):
     if perso_x == scroll_x:
@@ -85,22 +88,38 @@ def update():
       block_right = True
       block_left = False
     perso_x, animation, direction = deplacement_x(perso_x, 1, direction, block_left, block_right)
-  else:
-    perso_x, animation, direction = deplacement_x(perso_x, 1, direction, block_left, block_right)
-    if perso_x > scroll_x + SCROLL_BORDER_X and direction == 1:
-      scroll_x += 3
-    elif perso_x < SCROLL_BORDER_X:
-      scroll_x = 0
-    elif direction == -1 and animation == "run":
-      scroll_x -= 3
+  elif(great_boss_attack == False):
+    if(animation == "fireball"):
+      pass
+    else:
+      perso_x, animation, direction = deplacement_x(perso_x, 1, direction, block_left, block_right)
+      if perso_x > scroll_x + SCROLL_BORDER_X and direction == 1:
+        scroll_x += 3
+      elif perso_x < SCROLL_BORDER_X:
+        scroll_x = 0
+      elif direction == -1 and animation == "run":
+        scroll_x -= 3
 
-  print(is_attack)
   player_hit = has_been_hit_gb(is_jumping, is_attack)
   for elt in get_monster():
     if elt["name"] == "Great Boss":
       if player_hit:
         health = player_damage(health, elt["damage"])
-  
+      
+  if(game_over):
+    if(pyxel.btn(pyxel.KEY_E)):
+      game_over = False
+      perso_x = 0
+      y = 169
+      block_left = False
+      block_right = False
+      health = 100
+      scroll_x = 0
+      is_attack = False
+      great_boss_attack = False
+  else:
+      game_over = check_health(health)
+
   quest_list = get_quests()
   dimension = get_player()["dimension"]
 
@@ -220,6 +239,12 @@ def update():
               index = None
               changeJson("questNumber", questNumber, "data/player.json")
               input_text = ""
+            elif(questNumber == 2.9):
+              dimension = "ethereum"
+              changeJson("dimension", dimension, "data/player.json")
+            elif(questNumber == 3.2):
+              dimension = "genesis"
+              changeJson("dimension", dimension, "data/player.json")
 
 
         else:
@@ -262,7 +287,7 @@ def update():
 
 
 
-  if pyxel.btnr(pyxel.KEY_Z):
+  if pyxel.btnr(pyxel.KEY_X):
     animation = "fireball"
 
 
@@ -271,235 +296,254 @@ def update():
       game_launched = True
 
 def draw():
-  global input_text, great_boss_attack, great_boss_x, is_attack
-  if game_launched == False:
-    pyxel.text(100, 10, "Ethereal Odyssey", 12)
-    pyxel.text(40,100,"Press [E] to play (full screen highly recommended)", 12)
+  global input_text, great_boss_attack, great_boss_x, is_attack, coef
+  if game_over == True:
+    pyxel.cls(23)
+    pyxel.camera(0, 0)
+    pyxel.text(250,50,"GAME OVER", 21)
+    pyxel.text(100, 100, "Press [E] to restart", pyxel.frame_count % 25)
   else:
-    if dimension == "mine":
-      pyxel.camera(scroll_x, 0)
-      pyxel.cls(0)
-      for i in range(20):
-        pyxel.blt(256*i, 0, 1, 0,0,256,256)
+    if game_launched == False:
+      pyxel.text(100, 10, "Ethereal Odyssey", 12)
+      pyxel.text(40,100,"Press [E] to play (full screen highly recommended)", 12)
+    else:
+      if dimension == "mine":
+        pyxel.camera(scroll_x, 0)
+        pyxel.cls(0)
+        for i in range(20):
+          pyxel.blt(256*i, 0, 1, 0,0,256,256)
 
-      for elt in pnj_list:
-        if(type(elt["location_x"]) != list):
-          pyxel.blt(elt["position_x"], elt["position_y"], elt["image_bank"], elt["location_x"], elt["location_y"], elt["size_x"], elt["size_y"], 21)
-
-          if (elt["interactable"] == True and is_inside[elt["name"]] == True and elt["name"] == characters_quest):
-            pyxel.text(elt["position_x"]-20, 140, "Press [E] to interact", 21)
-        
-      if questNumber == 2.4 and get_quests()[2]["deploy"][3]["completion"] != 5:
-        for elt in ressources_mine:
-          pyxel.blt(elt[0], elt[1], 2, 58, 0, 33,29,21)
-          is_inside_mine = interact(perso_x, elt[0])
-          if(is_inside_mine):
-            pyxel.text(elt[0], 140, "[E] Mine", 21)
-            if(pyxel.btnp(pyxel.KEY_E)):
-              changeJson("2/deploy/3/completion", completion+1, "data/quests.json")
-              ressources_mine.remove(elt)
-      elif questNumber == 2.6:
-        if great_boss_attack == False:
-          pyxel.blt(1500, 130, 2, great_boss_sprite[0][0], great_boss_sprite[0][1],
-              great_boss_sprite[0][2]*-1, great_boss_sprite[0][3], 21)
-          is_inside_gb = interact(perso_x, 1450)
-          if(is_inside_gb):
-            pyxel.text(1500, 100, "[E] Attack", 21)
-            if(pyxel.btnp(pyxel.KEY_E)):
-              great_boss_attack = True
-        else:
-          great_boss_x = follow(perso_x, great_boss_x)
-          if(pyxel.frame_count // 40) % 3 == 0:
-            coef = pyxel.frame_count // 4 % 4
-            length_laser = math.ceil((great_boss_x - scroll_x) / 149)
-            great_boss_x_solve = great_boss_x-(great_boss_sprite[coef][2]-50)
-            if(great_boss_sprite[coef][2] > 49):
-              pyxel.blt(great_boss_x_solve, 130, 2, great_boss_sprite[coef][0], great_boss_sprite[coef][1],
-                great_boss_sprite[coef][2]*-1, great_boss_sprite[coef][3], 21)
-              if coef == 2:
-                for i in range(length_laser):
-                  pyxel.blt(great_boss_x_solve-90*i,178,2,155,126,100,6,21)
-                  is_attack = True
-              else:
-                is_attack = False
+        for elt in pnj_list:
+          if(type(elt["location_x"]) != list):
+            if(elt["name"] == "Spike" and questNumber == 2.8):
+              pyxel.blt(perso_x + 100, 256-get_ground_height(perso_x+100)*29-55, elt["image_bank"], elt["location_x"], elt["location_y"], elt["size_x"]*-1, elt["size_y"], 21)
             else:
-              pyxel.blt(great_boss_x_solve, 130, 2, great_boss_sprite[coef][0], great_boss_sprite[coef][1],
-                great_boss_sprite[coef][2]*-1, great_boss_sprite[coef][3], 21)
-          else:
-            pyxel.blt(great_boss_x, 130, 2, great_boss_sprite[0][0], great_boss_sprite[0][1],
-              great_boss_sprite[0][2]*-1, great_boss_sprite[0][3], 21)
+              pyxel.blt(elt["position_x"], elt["position_y"], elt["image_bank"], elt["location_x"], elt["location_y"], elt["size_x"], elt["size_y"], 21)
 
-      for tuple in platform_mine:
-        x1 = tuple[0]
-        x2 = tuple[1]
-        tup_y = tuple[2]
-        coef_ind = (x2-x1) // 29
-        for i in range(coef_ind):
-          pyxel.blt(x1+29*i,256-29*tup_y,2,0,0,29,29,21)
-          if tuple[2] != 1:
-            for j in range(1,tup_y):
-              pyxel.blt(x1+29*i,256-29*j,2,29,0,29,29,21)
-            
-
-  #Animation
-      if (animation == "run" and is_jumping == False):
-        coef = pyxel.frame_count // 5 % 5
-        pyxel.blt(perso_x, y, 0, run_sprite[coef][0], run_sprite[coef][1],
-                  run_sprite[coef][2] * direction, run_sprite[coef][3], 0)
-      elif (animation == "fireball" and is_jumping == False):
-        coef = pyxel.frame_count // 4 % 4
-        pyxel.blt(perso_x, y, 0, fireball_sprite[coef][0], fireball_sprite[coef][1],
-                  fireball_sprite[coef][2], fireball_sprite[coef][3], 0)
-      elif (y != 150 and is_jumping == True):
-        coef = pyxel.frame_count // 6 % 6
-        pyxel.blt(perso_x, y, 0, jump_sprite[coef][0], jump_sprite[coef][1],
-                  jump_sprite[coef][2] * direction, jump_sprite[coef][3], 0)
-      else:
-        pyxel.blt(perso_x, y, 0, 0, 0, 24*direction, 58, 0)
-
-      if character != "" and dialog != {} and dialog != "" and is_inside[characters_quest]: 
-        if(type(dialog[character]) == list):
-          pyxel.rect(scroll_x,170,500,100,23)
-          pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
-          for i in range(len(dialog[character])):
-            pyxel.text(scroll_x + 20,200+i*10,dialog[character][i]["Me_t1"], 21)
-        else:
-          pyxel.rect(scroll_x,170,500,100,23)
-          pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
-          pyxel.text(scroll_x + 20,215,dialog[character],21)
-          pyxel.text(scroll_x + 400, 230, "Press [J] to continue", 21)
-    
-      pyxel.rect(scroll_x + 370, 0, 130, 25, 23)
-      pyxel.text(scroll_x + 380, 5, title, 21)
-      if questNumber == 2.4:
-        pyxel.text(scroll_x + 380, 15, instruction, 21)
-        pyxel.text(scroll_x + 480, 15, str(completion) + "/5", 21)
-      else:
-        pyxel.text(scroll_x + 380, 15, instruction, 21)
-      
-      pyxel.blt(scroll_x,0,0,40,64,24,24,0)
-      pyxel.rect(scroll_x+24, 3, 101, 14, 23)
-      pyxel.rect(scroll_x+24, 4, 1*health, 12, 28)
-    elif dimension == "ethereum":
-      pyxel.camera(scroll_x, 0)
-      pyxel.cls(0)
-
-      for i in range(10):
-        pyxel.blt(256*i, 0, 1, 0,0,256,177)
-
-      for elt in pnj_list:
-        if(type(elt["location_x"]) != list):
-          pyxel.blt(elt["position_x"], elt["position_y"], elt["image_bank"], elt["location_x"], elt["location_y"], elt["size_x"], elt["size_y"], 21)
-
-          if (elt["interactable"] == True and is_inside[elt["name"]] == True and elt["name"] == characters_quest):
-            pyxel.text(elt["position_x"]-20, 140, "Press [E] to interact", 21)
-      #Démarrage de la quête
-      for i in range(100):
-        pyxel.blt(41*i,250-21,2,0,74,41,21)
-
-      pyxel.blt(200, 0, 2, 47,0,128,100,21)
-
-  #Animation
-      if (animation == "run" and is_jumping == False):
-        coef = pyxel.frame_count // 5 % 5
-        pyxel.blt(perso_x, y, 0, run_sprite[coef][0], run_sprite[coef][1],
-                  run_sprite[coef][2] * direction, run_sprite[coef][3], 0)
-      elif (animation == "fireball" and is_jumping == False):
-        coef = pyxel.frame_count // 4 % 4
-        pyxel.blt(perso_x, y, 0, fireball_sprite[coef][0], fireball_sprite[coef][1],
-                  fireball_sprite[coef][2], fireball_sprite[coef][3], 0)
-      elif (y != 150 and is_jumping == True):
-        coef = pyxel.frame_count // 6 % 6
-        pyxel.blt(perso_x, y, 0, jump_sprite[coef][0], jump_sprite[coef][1],
-                  jump_sprite[coef][2] * direction, jump_sprite[coef][3], 0)
-      else:
-        pyxel.blt(perso_x, y, 0, 0, 0, 24*direction, 58, 0)
-
-      if character != "" and dialog != {} and dialog != "" and is_inside[characters_quest]: 
-        if(type(dialog[character]) == list):
-          pyxel.rect(scroll_x,170,500,100,23)
-          pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
-          for i in range(len(dialog[character])):
-            pyxel.text(scroll_x + 20,200+i*10,dialog[character][i]["Me_t1"], 21)
-        else:
-          pyxel.rect(scroll_x,170,500,100,23)
-          pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
-          pyxel.text(scroll_x + 20,215,dialog[character],21)
-          pyxel.text(scroll_x + 400, 230, "Press [J] to continue", 21)
-    
-      pyxel.rect(scroll_x + 370, 0, 130, 25, 23)
-      pyxel.text(scroll_x + 380, 5, title, 21)
-      pyxel.text(scroll_x + 380, 15, instruction, 21)
-    elif dimension == "genesis":
-      pyxel.camera(scroll_x, 0)
-      pyxel.cls(0)
-
-      for i in range(10):
-        pyxel.blt(127*i,0,1,0,0,127,256)
-      for j in range(5):
-        pyxel.blt(1270+114*j,0,1,127,0,114,256)
-      if (animation == "run" and is_jumping == False):
-        coef = pyxel.frame_count // 5 % 5
-        pyxel.blt(perso_x, y, 0, run_sprite[coef][0], run_sprite[coef][1],
-                  run_sprite[coef][2] * direction, run_sprite[coef][3], 0)
-      elif (animation == "fireball" and is_jumping == False):
-        coef = pyxel.frame_count // 4 % 4
-        pyxel.blt(perso_x, y, 0, fireball_sprite[coef][0], fireball_sprite[coef][1],
-                  fireball_sprite[coef][2], fireball_sprite[coef][3], 0)
-      elif (y != 150 and is_jumping == True):
-        coef = pyxel.frame_count // 6 % 6
-        pyxel.blt(perso_x, y, 0, jump_sprite[coef][0], jump_sprite[coef][1],
-                  jump_sprite[coef][2] * direction, jump_sprite[coef][3], 0)
-      else:
-        pyxel.blt(perso_x, y, 0, 0, 0, 24*direction, 58, 0)
-
-      for elt in pnj_list:
-        if elt["name"] == "Original Block":
-          coef = pyxel.frame_count // len(elt["location_x"]) % len(elt["location_x"])
-          pyxel.blt(elt["position_x"], 225-elt["size_y"][coef], elt["image_bank"], elt["location_x"][coef], elt["location_y"][coef], elt["size_x"][coef], elt["size_y"][coef], 0)
-
-        if (is_inside[elt["name"]] == True and elt["name"] == characters_quest):
-          pyxel.text(elt["position_x"]-20, 140, "Press [E] to interact", 21)
-
-      if character != "" and dialog != {} and dialog != "" and is_inside[characters_quest]: 
-        if(type(dialog[character]) == list):
-          pyxel.rect(scroll_x,170,500,100,23)
-          pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
-          for i in range(len(dialog[character])):
-            pyxel.text(scroll_x + 20,200+i*10,dialog[character][i]["Me_t1"], 21)
-        elif(type(dialog[character]) == dict):
-          pyxel.rect(scroll_x,170,500,100,23)
-          pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
-          pyxel.text(scroll_x + 20, 200, dialog[character][subcharacter], 21)       
-          pyxel.text(scroll_x + 400, 230, "Press [J] to continue", 21)  
-        elif(dialog[character] == ""):
-          pyxel.rect(scroll_x,170,500,100,23)
-          pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
-          pyxel.text(scroll_x + 20, 200, input_text, 21)
-          if len(input_text) < 133:
-            for key in range(pyxel.KEY_A, pyxel.KEY_Z + 1):
-              if pyxel.btnp(key):
-                  input_text += chr(ord('A') + (key - pyxel.KEY_A))
+            if (elt["interactable"] == True and is_inside[elt["name"]] == True and elt["name"] == characters_quest):
+              pyxel.text(elt["position_x"]-20, 140, "Press [E] to interact", 21)
           
-            if pyxel.btnp(pyxel.KEY_SPACE):
-                input_text += " "
-            
-            if pyxel.btnp(pyxel.KEY_BACKSPACE) and len(input_text) > 0:
-                input_text = input_text[:-1]
-              
-            if pyxel.btnp(pyxel.KEY_PERIOD):
-              input_text += "'"
-        
-          pyxel.text(scroll_x + 390, 230, "Press [ENTER] to continue", 21)
-        else:
-          pyxel.rect(scroll_x,170,500,100,23)
-          pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
-          pyxel.text(scroll_x + 20,215,dialog[character],21)
-          pyxel.text(scroll_x + 400, 230, "Press [J] to continue", 21)
-    
-      pyxel.rect(scroll_x + 370, 0, 130, 25, 23)
-      pyxel.text(scroll_x + 380, 5, title, 21)
-      pyxel.text(scroll_x + 380, 15, instruction, 21)
+        if questNumber == 2.4 and get_quests()[2]["deploy"][3]["completion"] != 5:
+          for elt in ressources_mine:
+            pyxel.blt(elt[0], elt[1], 2, 58, 0, 33,29,21)
+            is_inside_mine = interact(perso_x, elt[0])
+            if(is_inside_mine):
+              pyxel.text(elt[0], 140, "[E] Mine", 21)
+              if(pyxel.btnp(pyxel.KEY_E)):
+                changeJson("2/deploy/3/completion", completion+1, "data/quests.json")
+                ressources_mine.remove(elt)
+        elif questNumber == 2.6:
+          if great_boss_attack == False:
+            pyxel.blt(1500, 130, 2, great_boss_sprite[0][0], great_boss_sprite[0][1],
+                great_boss_sprite[0][2]*-1, great_boss_sprite[0][3], 21)
+            is_inside_gb = interact(perso_x, 1450)
+            if(is_inside_gb):
+              pyxel.text(1500, 100, "[E] Attack", 21)
+              if(pyxel.btnp(pyxel.KEY_E)):
+                great_boss_attack = True
+          else:
+            great_boss_x = follow(perso_x, great_boss_x)
+            if(pyxel.frame_count // 40) % 3 == 0:
+              coef = pyxel.frame_count // 4 % 4
+              length_laser = math.ceil((great_boss_x - scroll_x) / 149)
+              great_boss_x_solve = great_boss_x-(great_boss_sprite[coef][2]-50)
+              if(great_boss_sprite[coef][2] > 49):
+                pyxel.blt(great_boss_x_solve, 130, 2, great_boss_sprite[coef][0], great_boss_sprite[coef][1],
+                  great_boss_sprite[coef][2]*-1, great_boss_sprite[coef][3], 21)
+                if coef == 2:
+                  for i in range(length_laser):
+                    pyxel.blt(great_boss_x_solve-90*i,178,2,155,126,100,6,21)
+                    is_attack = True
+                else:
+                  is_attack = False
+              else:
+                pyxel.blt(great_boss_x_solve, 130, 2, great_boss_sprite[coef][0], great_boss_sprite[coef][1],
+                  great_boss_sprite[coef][2]*-1, great_boss_sprite[coef][3], 21)
+            else:
+              pyxel.blt(great_boss_x, 130, 2, great_boss_sprite[0][0], great_boss_sprite[0][1],
+                great_boss_sprite[0][2]*-1, great_boss_sprite[0][3], 21)
 
+        for tuple in platform_mine:
+          x1 = tuple[0]
+          x2 = tuple[1]
+          tup_y = tuple[2]
+          coef_ind = (x2-x1) // 29
+          for i in range(coef_ind):
+            pyxel.blt(x1+29*i,256-29*tup_y,2,0,0,29,29,21)
+            if tuple[2] != 1:
+              for j in range(1,tup_y):
+                pyxel.blt(x1+29*i,256-29*j,2,29,0,29,29,21)
+              
+
+    #Animation
+        if (animation == "run" and is_jumping == False):
+          coef = pyxel.frame_count // 5 % 5
+          pyxel.blt(perso_x, y, 0, run_sprite[coef][0], run_sprite[coef][1],
+                    run_sprite[coef][2] * direction, run_sprite[coef][3], 0)
+        elif (animation == "fireball" and is_jumping == False):
+          coef = pyxel.frame_count // 4 % 4
+          pyxel.blt(perso_x, y, 0, fireball_sprite[coef][0], fireball_sprite[coef][1],
+                    fireball_sprite[coef][2], fireball_sprite[coef][3], 0)
+        elif (y != 150 and is_jumping == True):
+          coef = pyxel.frame_count // 6 % 6
+          pyxel.blt(perso_x, y, 0, jump_sprite[coef][0], jump_sprite[coef][1],
+                    jump_sprite[coef][2] * direction, jump_sprite[coef][3], 0)
+        else:
+          pyxel.blt(perso_x, y, 0, 0, 0, 24*direction, 58, 0)
+
+        if character != "" and dialog != {} and dialog != "" and is_inside[characters_quest]: 
+          if(type(dialog[character]) == list):
+            pyxel.rect(scroll_x,170,500,100,23)
+            pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
+            for i in range(len(dialog[character])):
+              pyxel.text(scroll_x + 20,200+i*10,dialog[character][i]["Me_t1"], 21)
+          else:
+            pyxel.rect(scroll_x,170,500,100,23)
+            pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
+            if(character.split("_")[0] == "Spike"):
+              pyxel.blt(scroll_x+446,105,2,205,137,52,63)
+            pyxel.text(scroll_x + 20,215,dialog[character],21)
+            pyxel.text(scroll_x + 400, 230, "Press [J] to continue", 21)
+      
+        pyxel.rect(scroll_x + 370, 0, 130, 25, 23)
+        pyxel.text(scroll_x + 380, 5, title, 21)
+        if questNumber == 2.4:
+          pyxel.text(scroll_x + 380, 15, instruction, 21)
+          pyxel.text(scroll_x + 480, 15, str(completion) + "/5", 21)
+        else:
+          pyxel.text(scroll_x + 380, 15, instruction, 21)
+        
+        pyxel.blt(scroll_x,0,0,40,64,24,24,0)
+        pyxel.rect(scroll_x+24, 3, 101, 14, 23)
+        pyxel.rect(scroll_x+24, 4, 1*health, 12, 28)
+      elif dimension == "ethereum":
+        pyxel.camera(scroll_x, 0)
+        pyxel.cls(0)
+
+        for i in range(10):
+          pyxel.blt(256*i, 0, 1, 0,0,256,177)
+
+        for elt in pnj_list:
+          if(type(elt["location_x"]) != list):
+            pyxel.blt(elt["position_x"], elt["position_y"], elt["image_bank"], elt["location_x"], elt["location_y"], elt["size_x"], elt["size_y"], 21)
+
+            if (elt["interactable"] == True and is_inside[elt["name"]] == True and elt["name"] == characters_quest):
+              pyxel.text(elt["position_x"]-20, 140, "Press [E] to interact", 21)
+        #Démarrage de la quête
+        for i in range(100):
+          pyxel.blt(41*i,250-21,2,0,74,41,21)
+
+        pyxel.blt(200, 0, 2, 47,0,128,100,21)
+
+    #Animation
+        if (animation == "run" and is_jumping == False):
+          coef = pyxel.frame_count // 5 % 5
+          pyxel.blt(perso_x, y, 0, run_sprite[coef][0], run_sprite[coef][1],
+                    run_sprite[coef][2] * direction, run_sprite[coef][3], 0)
+        elif (animation == "fireball" and is_jumping == False):
+          coef_fireball = pyxel.frame_count // 4 % 4
+          pyxel.blt(perso_x, y, 0, fireball_sprite[coef_fireball][0], fireball_sprite[coef_fireball][1],
+                    fireball_sprite[coef_fireball][2], fireball_sprite[coef_fireball][3], 0)
+          print(coef_fireball)
+        elif (y != 150 and is_jumping == True):
+          coef = pyxel.frame_count // 6 % 6
+          pyxel.blt(perso_x, y, 0, jump_sprite[coef][0], jump_sprite[coef][1],
+                    jump_sprite[coef][2] * direction, jump_sprite[coef][3], 0)
+        else:
+          pyxel.blt(perso_x, y, 0, 0, 0, 24*direction, 58, 0)
+
+        if character != "" and dialog != {} and dialog != "" and is_inside[characters_quest]: 
+          if(type(dialog[character]) == list):
+            pyxel.rect(scroll_x,170,500,100,23)
+            pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
+            for i in range(len(dialog[character])):
+              pyxel.text(scroll_x + 20,200+i*10,dialog[character][i]["Me_t1"], 21)
+          else:
+            pyxel.rect(scroll_x,170,500,100,23)
+            pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
+            pyxel.text(scroll_x + 20,215,dialog[character],21)
+            pyxel.text(scroll_x + 400, 230, "Press [J] to continue", 21)
+      
+        pyxel.rect(scroll_x + 370, 0, 130, 25, 23)
+        pyxel.text(scroll_x + 380, 5, title, 21)
+        pyxel.text(scroll_x + 380, 15, instruction, 21)
+
+        pyxel.blt(scroll_x,0,0,40,64,24,24,0)
+        pyxel.rect(scroll_x+24, 3, 101, 14, 23)
+        pyxel.rect(scroll_x+24, 4, 1*health, 12, 28)
+      elif dimension == "genesis":
+        pyxel.camera(scroll_x, 0)
+        pyxel.cls(0)
+
+        for i in range(10):
+          pyxel.blt(127*i,0,1,0,0,127,256)
+        for j in range(5):
+          pyxel.blt(1270+114*j,0,1,127,0,114,256)
+        if (animation == "run" and is_jumping == False):
+          coef = pyxel.frame_count // 5 % 5
+          pyxel.blt(perso_x, y, 0, run_sprite[coef][0], run_sprite[coef][1],
+                    run_sprite[coef][2] * direction, run_sprite[coef][3], 0)
+        elif (animation == "fireball" and is_jumping == False):
+          coef = pyxel.frame_count // 4 % 4
+          pyxel.blt(perso_x, y, 0, fireball_sprite[coef][0], fireball_sprite[coef][1],
+                    fireball_sprite[coef][2], fireball_sprite[coef][3], 0)
+        elif (y != 150 and is_jumping == True):
+          coef = pyxel.frame_count // 6 % 6
+          pyxel.blt(perso_x, y, 0, jump_sprite[coef][0], jump_sprite[coef][1],
+                    jump_sprite[coef][2] * direction, jump_sprite[coef][3], 0)
+        else:
+          pyxel.blt(perso_x, y, 0, 0, 0, 24*direction, 58, 0)
+
+        for elt in pnj_list:
+          if elt["name"] == "Original Block":
+            coef = pyxel.frame_count // len(elt["location_x"]) % len(elt["location_x"])
+            pyxel.blt(elt["position_x"], 225-elt["size_y"][coef], elt["image_bank"], elt["location_x"][coef], elt["location_y"][coef], elt["size_x"][coef], elt["size_y"][coef], 0)
+
+          if (is_inside[elt["name"]] == True and elt["name"] == characters_quest):
+            pyxel.text(elt["position_x"]-20, 140, "Press [E] to interact", 21)
+
+        if character != "" and dialog != {} and dialog != "" and is_inside[characters_quest]: 
+          if(type(dialog[character]) == list):
+            pyxel.rect(scroll_x,170,500,100,23)
+            pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
+            for i in range(len(dialog[character])):
+              pyxel.text(scroll_x + 20,200+i*10,dialog[character][i]["Me_t1"], 21)
+          elif(type(dialog[character]) == dict):
+            pyxel.rect(scroll_x,170,500,100,23)
+            pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
+            pyxel.text(scroll_x + 20, 200, dialog[character][subcharacter], 21)       
+            pyxel.text(scroll_x + 400, 230, "Press [J] to continue", 21)  
+          elif(dialog[character] == ""):
+            pyxel.rect(scroll_x,170,500,100,23)
+            pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
+            pyxel.text(scroll_x + 20, 200, input_text, 21)
+            if len(input_text) < 133:
+              for key in range(pyxel.KEY_A, pyxel.KEY_Z + 1):
+                if pyxel.btnp(key):
+                    input_text += chr(ord('A') + (key - pyxel.KEY_A))
+            
+              if pyxel.btnp(pyxel.KEY_SPACE):
+                  input_text += " "
+              
+              if pyxel.btnp(pyxel.KEY_BACKSPACE) and len(input_text) > 0:
+                  input_text = input_text[:-1]
+                
+              if pyxel.btnp(pyxel.KEY_PERIOD):
+                input_text += "'"
+          
+            pyxel.text(scroll_x + 390, 230, "Press [ENTER] to continue", 21)
+          else:
+            pyxel.rect(scroll_x,170,500,100,23)
+            pyxel.text(scroll_x + 20,185,character.split("_")[0], 21)
+            pyxel.text(scroll_x + 20,215,dialog[character],21)
+            pyxel.text(scroll_x + 400, 230, "Press [J] to continue", 21)
+      
+        pyxel.rect(scroll_x + 370, 0, 130, 25, 23)
+        pyxel.text(scroll_x + 380, 5, title, 21)
+        pyxel.text(scroll_x + 380, 15, instruction, 21)
+
+        pyxel.blt(scroll_x,0,0,40,64,24,24)
+        pyxel.rect(scroll_x+24, 3, 101, 14, 23)
+        pyxel.rect(scroll_x+24, 4, 1*health, 12, 28)
 
 pyxel.run(update, draw)
