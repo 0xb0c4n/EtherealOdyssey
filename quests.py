@@ -19,10 +19,14 @@ def is_in_hitbox(pos_x, hitbox):
 
 
 def interact(perso_x, pos_x):
+  """Prend en compte perso_x (int), pos_x (int)
+  Renvoie un booléen si le perso est dans la hitbox"""
   hitbox = calc_hitbox(pos_x)
   return is_in_hitbox(perso_x, hitbox)
 
 def launch_quest(questNumber, questDict, launch, dialog, character, i, index):
+  """Prend en compte questNumber (int), questDict (dict), launch (bool), dialog (str), character (vide), i (int), index (None)
+  Renvoie launch (bool), dialog(dict), character (str)"""
   if(pyxel.btnr(pyxel.KEY_E)):
     launch = True
     

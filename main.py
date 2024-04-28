@@ -86,6 +86,8 @@ fireball_x = 0
 end_game = False
 
 def get_ground_height(x):
+  """Prend en compte un x (int)
+  Renvoie la hauteur dans la dimension mine de ce x correspondant"""
   for tuple in platform_mine:
     if tuple[0] <= x < tuple[1]:
       return tuple[2]

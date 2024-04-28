@@ -1,6 +1,8 @@
 import random
 
 def spawn_ressources(min_x, max_x, platform_mine):
+    """Prend en compte min_x (int), max_x (int), platform_mine (liste de tuples)
+    Renvoie la liste des éléments spawn (list)"""
     list = []
     for i in range(5):
         x = random.randint(min_x, max_x)    
