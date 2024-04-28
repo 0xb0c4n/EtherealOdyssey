@@ -97,6 +97,7 @@ def update():
       changeJson("questNumber", 0.1, "data/player.json")
       changeJson("dimension", "ethereum", "data/player.json")
       changeJson("2/deploy/3/completion", 0, "data/quests.json")
+      end_game = False
   else:
     if(get_player()["questNumber"] == 4.1):
       end_game = True
@@ -143,7 +144,7 @@ def update():
           scroll_x = 0
           is_attack = False
           great_boss_attack = False
-          health_gb = 100
+          health_gb = 150
           health_gs = 300
           great_sorcerer_attack = False
           great_sorcerer_x = 1500
@@ -282,7 +283,10 @@ def update():
                 if(quest_list[int(questNumber)]["reward"]):
                   reward = quest_list[int(questNumber)]["reward"]
                   if "spell_" in reward:
-                    changeJson("0/unlocked", True, "data/spells.json")
+                    if questNumber < 2:
+                      changeJson("0/unlocked", True, "data/spells.json")
+                    else:
+                      changeJson("1/unlocked", True, "data/spells.json")
                 questNumber = int(questNumber) + 1.1
                 print(questNumber)
                 launch = False
@@ -377,9 +381,9 @@ def draw():
   global input_text, great_boss_attack, great_boss_x, is_attack, health_gb, great_sorcerer_attack, great_sorcerer_x, x, fireball_launched, fireball_x, moment_x, health_gs
   if end_game:  
     pyxel.cls(23)
-    pyxel.text(200, 50, "Ethereal Odyssey", pyxel.frame_count % 25)
-    pyxel.text(180,80,"Made by 0xb0c4n and Ceriem", 21)
-    pyxel.text(130,100,"Press [E] to restart the game to 0 (full screen highly recommended)", 21)
+    pyxel.text(scroll_x + 200, 50, "Ethereal Odyssey", pyxel.frame_count % 25)
+    pyxel.text(scroll_x + 180,80,"Made by 0xb0c4n and Ceriem", 21)
+    pyxel.text(scroll_x + 130,100,"Press [E] to restart the game to 0 (full screen highly recommended)", 21)
   else:
     if game_over == True:
       pyxel.cls(23)
@@ -402,7 +406,7 @@ def draw():
             if(type(elt["location_x"]) != list):
               if(elt["name"] == "Spike" and questNumber == 2.8):
                 pyxel.blt(perso_x + 100, 256-get_ground_height(perso_x+100)*29-55, elt["image_bank"], elt["location_x"], elt["location_y"], elt["size_x"]*-1, elt["size_y"], 21)
-              else:
+              elif elt["name"] != "Spike":
                 pyxel.blt(elt["position_x"], elt["position_y"], elt["image_bank"], elt["location_x"], elt["location_y"], elt["size_x"], elt["size_y"], 21)
 
               if (elt["interactable"] == True and is_inside[elt["name"]] == True and elt["name"] == characters_quest):
@@ -431,6 +435,9 @@ def draw():
               if(monster_d_hit):
                 if animation == "dash":
                   health_gb -= get_spells()[1]["damage"]
+                  if (pyxel.frame_count // 40) % 1 == 0:
+                    x = 1
+                    pyxel.load("ressources.pyxres")
                 else:
                   health_gb -= get_spells()[0]["damage"]
               great_boss_x, b = follow(perso_x, great_boss_x)

@@ -2,11 +2,11 @@
     {
         "spell1": "DASH",
         "damage": 2,
-        "unlocked": true
+        "unlocked": false
     },
     {
         "spell2": "FIREBALL",
         "damage": 5,
-        "unlocked": true
+        "unlocked": false
     }
 ]
