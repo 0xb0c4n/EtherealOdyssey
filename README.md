@@ -1,4 +1,4 @@
-# Project Name
+# ETHEREAL ODYSSEY
 
 ## Description
 
@@ -41,4 +41,4 @@ Contributions are welcome! Before getting started, please review the [contributi
 
 ## License
 
-This project is licensed under the [MIT](LICENSE) License.
+This project is licensed under the [GPL](LICENSE) License.
