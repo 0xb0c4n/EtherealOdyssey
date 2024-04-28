@@ -17,13 +17,13 @@ def has_been_hit(is_jumping, is_attack):
     else:
         return False
     
-def monster_hit(is_launched, fireball_x, monster_x, fireball_launched, animation, perso_x):
+def monster_hit(is_launched, fireball_x, monster_x, fireball_launched, animation, perso_x, done):
     """Prend 5 paramètres : is_launched (bool), fireball_x (int), monster_x (int), fireball_launched(bool), animation (str), perso_x (int)
     Renvoie un booléen (désignant si le monstre est touché) et fireball_launched (bool)"""
     if(fireball_launched and is_launched and fireball_x >= monster_x):
         fireball_launched = False
         return True, fireball_launched
-    elif animation == "dash" and perso_x + 66 >= monster_x:
+    elif animation == "dash" and perso_x + 66 >= monster_x and done == False:
         return True, fireball_launched
     else:
         return False, fireball_launched

@@ -84,6 +84,7 @@ fireball_launched = False
 fireball_x = 0
 
 end_game = False
+done = False 
 
 def get_ground_height(x):
   """Prend en compte un x (int)
@@ -93,7 +94,7 @@ def get_ground_height(x):
       return tuple[2]
 
 def update():
-  global perso_x, block_left, is_attack, x, fireball_x, moment_x, end_game, fireball_launched, great_sorcerer_attack, great_sorcerer_x, great_boss_attack, great_boss_x, health_gs, great_sorcerer_attack, game_over, deploy, health, health_gb, secondQuestNumber, completion, questNumber, velocity_y, block_right, subcharacter, input_text, animation, direction, dimension, y, scroll_x, is_jumping, is_inside, character_name, index, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i, characters_quest, objective
+  global perso_x, block_left, is_attack, x, done, fireball_x, moment_x, end_game, fireball_launched, great_sorcerer_attack, great_sorcerer_x, great_boss_attack, great_boss_x, health_gs, great_sorcerer_attack, game_over, deploy, health, health_gb, secondQuestNumber, completion, questNumber, velocity_y, block_right, subcharacter, input_text, animation, direction, dimension, y, scroll_x, is_jumping, is_inside, character_name, index, position_x, showed, game_launched, title, launch, character, pnj_list, dialog, instruction, i, characters_quest, objective
   if end_game:
     if(pyxel.btnp(pyxel.KEY_E)):
       changeJson("questNumber", 0.1, "data/player.json")
@@ -109,6 +110,7 @@ def update():
           pass
         else: 
           x= 0
+          done = False
           if perso_x == scroll_x:
             block_left = True
             block_right = False
@@ -380,7 +382,7 @@ def update():
           game_launched = True
 
 def draw():
-  global input_text, great_boss_attack, great_boss_x, is_attack, health_gb, great_sorcerer_attack, great_sorcerer_x, x, fireball_launched, fireball_x, moment_x, health_gs
+  global input_text, great_boss_attack, great_boss_x, is_attack, health_gb, great_sorcerer_attack, done, great_sorcerer_x, x, fireball_launched, fireball_x, moment_x, health_gs
   if end_game:  
     pyxel.cls(23)
     pyxel.text(scroll_x + 200, 50, "Ethereal Odyssey", pyxel.frame_count % 25)
@@ -435,13 +437,11 @@ def draw():
                 if(pyxel.btnp(pyxel.KEY_E)):
                   great_boss_attack = True
             else:
-              monster_d_hit, fireball_launched = monster_hit(great_boss_attack, fireball_x, great_boss_x, fireball_launched, animation, perso_x)
+              monster_d_hit, fireball_launched = monster_hit(great_boss_attack, fireball_x, great_boss_x, fireball_launched, animation, perso_x, done)
               if(monster_d_hit):
-                if animation == "dash":
+                if animation == "dash" and is_jumping == False:
                   health_gb -= get_spells()[1]["damage"]
-                  if (pyxel.frame_count // 40) % 1 == 0:
-                    x = 1
-                    pyxel.load("ressources.pyxres")
+                  done = True
                 else:
                   health_gb -= get_spells()[0]["damage"]
               great_boss_x, b = follow(perso_x, great_boss_x)
