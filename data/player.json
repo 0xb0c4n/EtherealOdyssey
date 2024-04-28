@@ -1,11 +1,4 @@
 {
-    "username": "alex",
-    "level": 0,
-    "questNumber": 3.2,
-    "speed": 1,
-    "height": 1,
-    "hasCopperKey": false,
-    "hasSilverKey": false,
-    "hasGoldKey": false,
-    "dimension": "genesis"
+    "questNumber": 2.6,
+    "dimension": "mine"
 }

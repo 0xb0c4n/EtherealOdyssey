@@ -2,7 +2,13 @@
     {
         "name": "Great Boss",
         "dimension": "mine",
-        "damage": 2,
+        "damage": 1,
         "health": 150
+    },
+    {
+        "name": "Great Sorcerer",
+        "dimension": "genesis",
+        "damage": 2,
+        "health": 500
     }
 ]

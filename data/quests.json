@@ -180,7 +180,7 @@
                 "questNumber": 2.4,
                 "objective": "mine",
                 "miningObj": 5,
-                "completion": 0
+                "completion": 5
             },
             {
                 "character": "Chief Miner",
@@ -215,7 +215,7 @@
                 }
             },
             {
-                "character":"Chief Miner",
+                "character": "Chief Miner",
                 "instruction": "Go to Chief Miner with Spike",
                 "questNumber": 2.8,
                 "objective": "dialog",
@@ -267,7 +267,7 @@
                 "instruction": "Talk to the Original Block",
                 "questNumber": 3.2,
                 "objective": "dialog",
-                "correct_index": 1,
+                "correct_index": 0,
                 "dialog": {
                     "Original Block_t1": "Greetings, traveler. How can I help you ?",
                     "Me_t1": "I'd like to be teleported to the Great Sorcerer",
@@ -280,6 +280,28 @@
                             "Me_t1": "[2] Decline"
                         }
                     ]
+                }
+            },
+            {
+                "character": "",
+                "instruction": "Kill the Great Sorcerer",
+                "questNumber": 3.3,
+                "objective": "kill"
+            },
+            {
+                "character": "Great Sorcerer",
+                "instruction": "Talk to the Great Sorcerer",
+                "questNumber": 3.4,
+                "objective": "dialog",
+                "dialog": {
+                    "Me_t1": "So... it was you all along.",
+                    "Great Sorcerer_t1": "Yes I am. As I helped you during your journey, I now fight you...",
+                    "Me_T2": "But why? Why did you deceive me?",
+                    "Great Sorcerer_t2": "You misunderstand. Every challenge you faced, every obstacle you overcame, it was all necessary for your growth.",
+                    "Me_T3": "What was the objective ? For you was I like a fruit waiting to be plucked ?",
+                    "Great Sorcerer_t3": "I was searching for someone who could take my seat. Someone who could reign over the blockchain like I did",
+                    "Me_t4": "And you chose me ? But why ?",
+                    "Great Sorcerer_t4": "Sometimes, dear traveler, you must know that fate is not something we can control, even with great power... \nGo now, dear traveler, and become the only ruler of the chain..."
                 }
             }
         ]

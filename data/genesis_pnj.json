@@ -10,5 +10,17 @@
         "size_y": [39,40,42,43,46],
         "position_x": 1500,
         "position_y":177
+      },
+      {
+        "name": "Great Sorcerer",
+        "questGiver": false,
+        "interactable": true,
+        "image_bank": 2,
+        "location_x": 0,
+        "location_y": 0,
+        "size_x": 36,
+        "size_y": 60,
+        "position_x": 400,
+        "position_y": 159
       }
 ]

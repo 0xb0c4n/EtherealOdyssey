@@ -22,30 +22,12 @@ def object_in_trajectory(y, *n):
       
 
 
-def fireball(pos_x, direction, tab_pos_object, dico_object_ig):
-    if direction == 1:
-       pos_end = pos_x + 225
-    elif direction == -1:
-       pos_end = pos_x - 225
-    while pos_x != pos_end :
-      for pos_object in tab_pos_object:
-         hitbox_object = calc_hitbox(pos_object[0])
-         if is_in_hitbox(pos_x, hitbox_object) == True:
-            for key, value in dico_object_ig.items():
-               if pos_object == value:
-                  return key
-      if direction == 1:   
-         pos_x += 1
-      elif direction == -1:
-         pos_x -= 1
+def fireball(pos_x):
+    pos_end = pos_x + 500
     return pos_end
 
-def dash(pos_x, direction, dico_object_ig):
-    if direction == 1:
-       range = calc_hitbox(pos_x)[1]
-    elif direction == -1:
-       range = calc_hitbox(pos_x)[0]
-    
+def dash(pos_x, direction):
+    range = calc_hitbox(pos_x)[1]    
       
 
    
