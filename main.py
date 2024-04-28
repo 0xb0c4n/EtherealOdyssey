@@ -404,7 +404,7 @@ def draw():
 
           for elt in pnj_list:
             if(type(elt["location_x"]) != list):
-              if(elt["name"] == "Spike" and questNumber == 2.8):
+              if(elt["name"] == "Spike" and questNumber >= 2.7):
                 pyxel.blt(perso_x + 100, 256-get_ground_height(perso_x+100)*29-55, elt["image_bank"], elt["location_x"], elt["location_y"], elt["size_x"]*-1, elt["size_y"], 21)
               elif elt["name"] != "Spike":
                 pyxel.blt(elt["position_x"], elt["position_y"], elt["image_bank"], elt["location_x"], elt["location_y"], elt["size_x"], elt["size_y"], 21)
