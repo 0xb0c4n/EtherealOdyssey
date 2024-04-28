@@ -4,7 +4,7 @@ Thank you for considering contributing to this project! Contributions are welcom
 
 ## Code of Conduct
 
-Please note that this project follows a [Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project, you are expected to uphold this code. Please report any unacceptable behavior to [maintainers_email@example.com](mailto:maintainers_email@example.com).
+Please note that this project follows a [Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project, you are expected to uphold this code. Please report any unacceptable behavior to [womercode@gmail.com](mailto:womercode@gmail.com).
 
 ## How to Contribute
 
