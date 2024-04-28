@@ -576,7 +576,7 @@ def draw():
 
           else:
             for elt in pnj_list:
-              if elt["name"] == "Original Block":
+              if elt["name"] == "Original Block" and questNumber != 3.4:
                 coef = pyxel.frame_count // len(elt["location_x"]) % len(elt["location_x"])
                 pyxel.blt(elt["position_x"], 225-elt["size_y"][coef], elt["image_bank"], elt["location_x"][coef], elt["location_y"][coef], elt["size_x"][coef], elt["size_y"][coef], 0)
               elif elt["name"] == "Great Sorcerer" and questNumber == 3.4:
