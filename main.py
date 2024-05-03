@@ -543,7 +543,7 @@ def draw():
                   great_sorcerer_attack = True
             else:
               print(great_sorcerer_x)
-              monster_d_hit, fireball_launched = monster_hit(great_sorcerer_attack, fireball_x, great_sorcerer_x, fireball_launched, animation, perso_x)
+              monster_d_hit, fireball_launched = monster_hit(great_sorcerer_attack, fireball_x, great_sorcerer_x, fireball_launched, animation, perso_x, done)
               if(monster_d_hit):
                 if animation == "dash":
                   health_gs -= get_spells()[1]["damage"]
