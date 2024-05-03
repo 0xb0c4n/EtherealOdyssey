@@ -22,7 +22,7 @@ This project is a [Python](https://www.python.org/) application using the [Pyxel
 4. Install the necessary dependencies using `pip`:
 
     ```bash
-    pip install -r requirements.txt
+    pip install -U pyxel
     ```
 
 ## Usage
